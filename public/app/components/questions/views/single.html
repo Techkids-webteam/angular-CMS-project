@@ -1,0 +1,70 @@
+<div class="page-header">
+    <h1 ng-if="question.type=='create'">Create Question</h1>
+    <h1 ng-if="question.type=='edit'">Edit Question</h1>
+</div>
+<form id="questionform" class="form-horizontal" ng-submit="question.saveQuestion()">
+    <div class="form-group">
+        <label class="col-sm-2 control-label">type</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" ng-model="question.questionData.type">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label">sub_type</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" ng-model="question.questionData.sub_type">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label">stimulus</label>
+        <div class="col-sm-6">
+          <textarea class="form-control" form="questionform" ng-model="question.questionData.stimulus" rows="10"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label">stem</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" ng-model="question.questionData.stem">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label">answer_choices</label>
+        <div class="col-sm-6">
+            <ol>
+              <li ng-repeat="choice in question.questionData.answer_choices">
+                <ul>
+                  <li>
+                    <label for="">Choice :</label>
+                    <input type="text" ng-model="choice.choice">
+                  </li>
+                  <li>
+                    <label for="">Explanation :</label>
+                    <input type="text" ng-model="choice.explanation">
+                  </li>
+                  <li>
+                    <label for="">Note :</label>
+                    <input type="text" ng-model="choice.note">
+                  </li>
+                </ul>
+              </li>
+            </ul>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label">right_answer</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" ng-model="question.questionData.right_answer">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-6">
+            <button class="btn btn-success btn-lg btn-block" type="submit" ng-if="question.type=='create'">Create Question</button>
+            <button class="btn btn-success btn-lg btn-block" type="submit" ng-if="question.type=='edit'">Update Question</button>
+        </div>
+    </div>
+</form>
+<div class="row show-hide-message" ng-show="question.message">
+  <div class="col-sm-6 col-sm-offset-2">
+    <div class="alert alert-info">{{question.message}}</div>
+  </div>
+</div>

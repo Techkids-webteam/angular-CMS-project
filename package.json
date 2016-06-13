@@ -1,0 +1,11 @@
+{
+  "name": "node-api",
+  "main": "server.js",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "~1.15.1",
+    "express": "~4.13.4",
+    "mongoose": "~4.4.17",
+    "morgan": "~1.7.0"
+  }
+}

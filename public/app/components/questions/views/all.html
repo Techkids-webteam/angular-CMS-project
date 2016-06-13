@@ -1,0 +1,55 @@
+<div class="page-header">
+    <h1>questions</h1>
+    <a href="/questions/create" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span>New Question</a>
+</div>
+<!-- LOADING MESSAGE -->
+<div class="jumbotron text-center" ng-show="question.processing">
+    <span class="glyphicon glyphicon-repeat spinner"></span>
+    <p>Loading Questions...</p>
+</div>
+<div class="jumbotron text-center">
+  <h2>Summary</h2>
+
+  <p>There are: {{question.questions.length}} question in this list</p>
+  <span class="glyphicon glyphicon-search"></span><input type="search" ng-model="x" placeholder="filter questions..." >
+</div>
+<table class="table table-bordered table-striped" ng-show="question.questions">
+    <thead>
+        <tr>
+            <th>_id</th>
+            <th>type</th>
+            <th>sub_type</th>
+            <th>stimulus</th>
+            <th>stem</th>
+            <th>answer_choices</th>
+            <th>right_answer</th>
+            <th class="col-sm-2"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in question.questions | filter:x as results">
+            <td>{{item._id}}</td>
+            <td>{{item.type}}</td>
+            <td>{{item.sub_type}}</td>
+            <td>{{item.stimulus}}</td>
+            <td>{{item.stem}}</td>
+            <td>
+              <ol >
+                <li ng-repeat="choice in item.answer_choices">
+                  <ul>
+                    <li>Choice:{{choice.choice}}</li>
+                    <li>Explaination:{{choice.explanation}}</li>
+                    <li>Note: {{choice.note}}</li>
+                  </ul>
+                </li>
+              </ol>
+            </td>
+            <td>{{item.right_answer}}</td>
+            <td class="col-sm-2">
+              <a ng-href="/questions/{{item._id}}" class="btn btn-danger">Edit</a>
+              <a href="#" ng-click="question.deleteQuestion(item._id)" class="btn btn-primary">Delete</a>
+
+            </td>
+        </tr>
+    </tbody>
+</table>
