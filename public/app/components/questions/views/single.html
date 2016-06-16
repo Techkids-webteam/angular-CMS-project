@@ -29,8 +29,8 @@
     </div>
     <div class="form-group">
         <label for="" class="col-sm-2 control-label">answer_choices</label>
-        <div class="col-sm-6">
-            <ol>
+        <div class="col-sm-12">
+            <!-- <ol>
               <li ng-repeat="choice in question.questionData.answer_choices">
                 <ul>
                   <li>
@@ -47,7 +47,26 @@
                   </li>
                 </ul>
               </li>
-            </ul>
+            </ul> -->
+            <button type="button" ng-click="question.addChoice()">
+              <span class="glyphicon glyphicon-plus text-success">Add</span>
+            </button>
+
+            <table class="table table-bordered table-striped">
+              <thead>
+                  <tr>
+                      <th>Items</th>
+                      <th>Choice</th>
+                      <th>Explanation</th>
+                      <th>Note</th>
+                      <th class="col-sm-2"></th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="choice in question.questionData.answer_choices" ng-include="question.getTemplate(choice)">
+                </tr>
+              </tbody>
+            </table>
         </div>
     </div>
     <div class="form-group">
@@ -68,3 +87,24 @@
     <div class="alert alert-info">{{question.message}}</div>
   </div>
 </div>
+
+<script id="display" type="text/ng-template">
+  <td>{{$index + 1}}</td>
+  <td>{{choice.choice}}</td>
+  <td>{{choice.explanation}}</td>
+  <td>{{choice.note}}</td>
+  <td>
+    <button ng-click="question.editChoice(choice)"><span class="glyphicon glyphicon-edit text-warning"></span></button>
+    <button ng-click="question.deleteChoice(choice)"><span class="glyphicon glyphicon-trash text-danger"></span></button>
+  </td>
+</script>
+<script id="edit" type="text/ng-template">
+  <td>{{$index + 1}}</td>
+  <td><input type="text" ng-model="question.selectedChoice.choice" /></td>
+  <td><input type="text" ng-model="question.selectedChoice.explanation" /></td>
+  <td><input type="text" ng-model="question.selectedChoice.note" /></td>
+  <td>
+    <button ng-click="question.saveColor($index)"><span class="glyphicon glyphicon-ok text-success"></span></button>
+    <button ng-click="question.reset()"><span class="glyphicon glyphicon-remove text-danger"></span></button>
+  </td>
+</script>

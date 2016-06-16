@@ -8,10 +8,11 @@
     <p>Loading Questions...</p>
 </div>
 <div class="jumbotron text-center">
-  <h2>Summary</h2>
+    <h2>Summary</h2>
 
-  <p>There are: {{question.questions.length}} question in this list</p>
-  <span class="glyphicon glyphicon-search"></span><input type="search" ng-model="x" placeholder="filter questions..." >
+    <p>There are: {{question.questions.length}} question in this list</p>
+    <span class="glyphicon glyphicon-search"></span>
+    <input type="search" ng-model="x" placeholder="filter questions...">
 </div>
 <table class="table table-bordered table-striped" ng-show="question.questions">
     <thead>
@@ -34,22 +35,36 @@
             <td>{{item.stimulus}}</td>
             <td>{{item.stem}}</td>
             <td>
-              <ol >
-                <li ng-repeat="choice in item.answer_choices">
-                  <ul>
-                    <li>Choice:{{choice.choice}}</li>
-                    <li>Explaination:{{choice.explanation}}</li>
-                    <li>Note: {{choice.note}}</li>
-                  </ul>
-                </li>
-              </ol>
+                <ol>
+                    <li ng-repeat="choice in item.answer_choices">
+                        <ul>
+                            <li>Choice:{{choice.choice}}</li>
+                            <li>Explaination:{{choice.explanation}}</li>
+                            <li>Note: {{choice.note}}</li>
+                        </ul>
+                    </li>
+                </ol>
             </td>
             <td>{{item.right_answer}}</td>
             <td class="col-sm-2">
-              <a ng-href="/questions/{{item._id}}" class="btn btn-danger">Edit</a>
-              <a href="#" ng-click="question.deleteQuestion(item._id)" class="btn btn-primary">Delete</a>
+                <a ng-href="/questions/{{item._id}}" class="btn btn-danger">Edit</a>
+                <a href="#" ng-click="question.deleteQuestion(item._id)" class="btn btn-primary">Delete</a>
 
             </td>
         </tr>
     </tbody>
 </table>
+
+<uib-alert ng-repeat="alert in question.alerts" type="{{alert.type}}" close="question.closeAlert($index)">{{alert.msg}}</uib-alert>
+<button type="button" class='btn btn-default' ng-click="question.addAlert()">Add Alert</button>
+
+    <h4>Pager</h4>
+    <pre>{{question.linhtinh}} You are currently on page {{question.currentPage}} </pre>
+    <uib-pager total-items="question.totalItems" ng-model="question.currentPage"></uib-pager>
+
+
+<!-- <pagination
+     max-size="5"
+     items-per-page="7"
+     total-items="question.questions"
+     ng-change="pageChanged()"></pagination> -->

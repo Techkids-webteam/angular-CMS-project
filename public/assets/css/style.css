@@ -38,3 +38,18 @@ SHOW AND HIDE*/
   -webkit-animation:zoomIn 0.3s both ease;
   -moz-animation:zoomIn 0.3s both ease;
 }
+
+/*#content-views {position: relative;}
+.ng-enter, .ng-leave {width:100%; position: absolute;}
+.ng-enter {
+  -webkit-animation: slideInDown 1.5s both ease-in;
+  -moz-animation: slideInDown 1.5s both ease-in;
+  animation: slideInDown 1.5s both ease-in;
+}
+.ng-leave {
+  -webkit-animation: zoomOutDown 0.5s both ease-in;
+  -moz-animation: zoomOutDown 0.5s both ease-in;
+  animation: zoomOutDown 0.5s both ease-in;
+}*/
+
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }

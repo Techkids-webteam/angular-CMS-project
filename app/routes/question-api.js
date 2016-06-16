@@ -28,7 +28,7 @@ module.exports = function(app,express) {
         .get(function(req,res) {
           Question.find({}, function(err,questions) {
             if (err) res.send(err);
-            res.json(questions);
+            res.json({message:"nice",questions:questions});
           });
         });
   question_api_Router.route('/questions/:question_id')
