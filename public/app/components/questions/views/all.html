@@ -1,6 +1,10 @@
 <div class="page-header">
     <h1>questions</h1>
     <a href="/questions/create" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span>New Question</a>
+  <div ng-controller="shitController as shit"><p >{{shit.linhtinh}} </p>
+  <p> {{shit.myString | limitTo:shit.numLimit}} </p>
+  <button type='button' ng-click="shit.readMore()">read more</button></div>
+
 </div>
 <!-- LOADING MESSAGE -->
 <div class="jumbotron text-center" ng-show="question.processing">
@@ -17,24 +21,25 @@
 <table class="table table-bordered table-striped" ng-show="question.questions">
     <thead>
         <tr>
-            <th>_id</th>
+            <th>N.o</th>
             <th>type</th>
             <th>sub_type</th>
             <th>stimulus</th>
             <th>stem</th>
-            <th>answer_choices</th>
-            <th>right_answer</th>
+            <!-- <th>answer_choices</th>
+            <th>right_answer</th> -->
             <th class="col-sm-2"></th>
         </tr>
     </thead>
     <tbody>
         <tr ng-repeat="item in question.questions | filter:x as results">
-            <td>{{item._id}}</td>
+            <td>{{$index + 1}}</td>
             <td>{{item.type}}</td>
             <td>{{item.sub_type}}</td>
-            <td>{{item.stimulus}}</td>
-            <td>{{item.stem}}</td>
-            <td>
+            <td>{{item.stimulus | limitTo:question.numLimit}}</td>
+            <td>{{item.stem | limitTo:question.numLimit}} <button type='button' ng-click="question.readMore()">read more</button></td>
+
+            <!-- <td>
                 <ol>
                     <li ng-repeat="choice in item.answer_choices">
                         <ul>
@@ -45,7 +50,7 @@
                     </li>
                 </ol>
             </td>
-            <td>{{item.right_answer}}</td>
+            <td>{{item.right_answer}}</td> -->
             <td class="col-sm-2">
                 <a ng-href="/questions/{{item._id}}" class="btn btn-danger">Edit</a>
                 <a href="#" ng-click="question.deleteQuestion(item._id)" class="btn btn-primary">Delete</a>
@@ -59,7 +64,7 @@
 <button type="button" class='btn btn-default' ng-click="question.addAlert()">Add Alert</button>
 
     <h4>Pager</h4>
-    <pre>{{question.linhtinh}} You are currently on page {{question.currentPage}} </pre>
+    <pre>You are currently on page {{question.currentPage}} </pre>
     <uib-pager total-items="question.totalItems" ng-model="question.currentPage"></uib-pager>
 
 

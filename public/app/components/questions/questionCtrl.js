@@ -2,11 +2,14 @@ angular.module('questionCtrl', ['questionService'])
     .controller('questionController', function(Question) {
         var vm = this;
         vm.processing = true;
-        // BUTTONS ======================
-
+        // see more ======================
+        vm.numLimit = 80;
+        vm.readMore = function() {
+          vm.numLimit = 3000;
+        };
+        //========== testing ===============
         vm.totalItems = 50;
         vm.currentPage = 1;
-
         vm.alerts = [
         { type: 'danger', msg: 'Oh snap! Change a few things up and try submitting again.' },
         { type: 'success', msg: 'Well done! You successfully read this important alert message.' }
@@ -156,7 +159,12 @@ angular.module('questionCtrl', ['questionService'])
                 });
         };
     })
-    .controller('padginationController', function(Question){
-      var vm = this;
-      vm.linhtinh = "hello";
+    .controller('shitController', function(Question) {
+        var vm = this;
+        vm.linhtinh = "dkm";
+        vm.numLimit = 20;
+        vm.myString ="sdsadsdsdsaldkjslkdsaklds dsalkdjsakdsaj djasldj dsakljd dasjlkds jdasldjsl ";
+        vm.readMore = function() {
+          vm.numLimit = 300;
+        };
     });
