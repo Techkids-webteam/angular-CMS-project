@@ -51,7 +51,13 @@ angular.module('app.routes', ['ngRoute'])
             templateUrl: 'app/components/questions/views/single.html',
             controller: 'questionEditController',
             controllerAs: 'question'
-        });
+        })
+
+        .when('/questionpacks',{
+            templateUrl: 'app/components/questionpacks/views/all.html',
+            controller: 'questionpackController',
+            controllerAs: 'questionpack'
+        })
 
     $locationProvider.html5Mode(true);
 
