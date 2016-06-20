@@ -91,18 +91,32 @@ angular.module('authService', [])
 
 	var interceptorFactory = {};
 
-	// this will happen on all HTTP requests
+	// // this will happen on all HTTP requests
+	// interceptorFactory.request = function(config) {
+	//
+	// 	// grab the token
+	// 	var token = AuthToken.getToken();
+	// 	// if the token exists, add it to the header as x-access-token
+	// 	if (token)
+	// 		config.headers['x-access-token'] = token;
+	//
+	// 	return config;
+	// };
+
 	interceptorFactory.request = function(config) {
+        var isWeatherAPI = config.url.indexOf('125.212.233.51:9000') > -1;
+    // don't modify weather api headers
+    if (!isWeatherAPI) {
+        //grab the token
+        var token = AuthToken.getToken();
+        //If token exists then add it to the header as x-access-token
+        if (token) {
+            config.headers['x-access-token'] = token;
+        }
+    }
 
-		// grab the token
-		var token = AuthToken.getToken();
-
-		// if the token exists, add it to the header as x-access-token
-		if (token)
-			config.headers['x-access-token'] = token;
-
-		return config;
-	};
+    return config;
+};
 
 	// happens on response errors
 	interceptorFactory.responseError = function(response) {
