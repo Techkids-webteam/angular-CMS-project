@@ -5,23 +5,28 @@ angular.module('questionCtrl', ['questionService'])
         // see more ======================
         vm.numLimit = 80;
         vm.readMore = function() {
-          vm.numLimit = 3000;
+            vm.numLimit = 3000;
         };
-        //========== testing ===============
-        vm.totalItems = 50;
-        vm.currentPage = 1;
-        vm.alerts = [
-        { type: 'danger', msg: 'Oh snap! Change a few things up and try submitting again.' },
-        { type: 'success', msg: 'Well done! You successfully read this important alert message.' }
-        ];
-
-        vm.addAlert = function() {
-          vm.alerts.push({msg: 'Another alert!'});
-        };
-
-        vm.closeAlert = function(index) {
-          vm.alerts.splice(index, 1);
-        };
+        // //========== testing ===============
+        // vm.totalItems = 50;
+        // vm.currentPage = 1;
+        // vm.alerts = [{
+        //     type: 'danger',
+        //     msg: 'Oh snap! Change a few things up and try submitting again.'
+        // }, {
+        //     type: 'success',
+        //     msg: 'Well done! You successfully read this important alert message.'
+        // }];
+        //
+        // vm.addAlert = function() {
+        //     vm.alerts.push({
+        //         msg: 'Another alert!'
+        //     });
+        // };
+        //
+        // vm.closeAlert = function(index) {
+        //     vm.alerts.splice(index, 1);
+        // };
 
         Question.all()
             .success(function(data) {
@@ -163,8 +168,43 @@ angular.module('questionCtrl', ['questionService'])
         var vm = this;
         vm.linhtinh = "dkm";
         vm.numLimit = 20;
-        vm.myString ="sdsadsdsdsaldkjslkdsaklds dsalkdjsakdsaj djasldj dsakljd dasjlkds jdasldjsl ";
+        vm.myString = "sdsadsdsdsaldkjslkdsaklds dsalkdjsakdsaj djasldj dsakljd dasjlkds jdasldjsl ";
         vm.readMore = function() {
-          vm.numLimit = 300;
+            vm.numLimit = 300;
         };
+    })
+    .controller('paginationController', function(Question) {
+        var vm = this;
+        Question.all()
+            .success(function(data) {
+                vm.processing = false;
+                vm.questions = data.questions;
+                // pagination
+                vm.totalItems = vm.questions.length;
+                console.log(vm.totalItems);
+                vm.currentPage = 2;
+                vm.pageChanged = function() {
+                    $log.log('Page changed to: ' + $scope.currentPage);
+                };
+            });
+
+    }).controller('TodoController', function($scope) {
+        $scope.filteredTodos = [], $scope.currentPage = 1, $scope.numPerPage = 10, $scope.maxSize = 5;
+        $scope.makeTodos = function() {
+            $scope.todos = [];
+            for (i = 1; i <= 1000; i++) {
+                $scope.todos.push({
+                    text: 'todo ' + i,
+                    done: false
+                });
+            }
+        };
+        $scope.makeTodos();
+
+        $scope.$watch('currentPage + numPerPage', function() {
+            var begin = (($scope.currentPage - 1) * $scope.numPerPage),
+                end = begin + $scope.numPerPage;
+
+            $scope.filteredTodos = $scope.todos.slice(begin, end);
+        });
     });
