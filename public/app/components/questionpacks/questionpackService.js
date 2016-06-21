@@ -2,13 +2,13 @@ angular.module('questionpackService', []) // ten duoc dat trong app.routes.js
 .factory('Questionpack', function($http){
     var questionpackFactory = {};
     //get all question packs:
-    questionpackFactory.all = function(){
-        return $http.get('/api/question_packs');
+    questionpackFactory.all = function() {
+      return $http.get('http://125.212.233.51:9000/api/gmat/question_packs');
     };
 
     // create a question pack
     questionpackFactory.create = function(questionPackData) {
-      return $http.post('/api/question_packs/', questionPackData);
+      return $http.post('http://125.212.233.51:9000/api/gmat/post-question-pack', questionPackData);
     } ;
 
     // get single question pack
@@ -18,12 +18,12 @@ angular.module('questionpackService', []) // ten duoc dat trong app.routes.js
 
     // update a question pack
     questionpackFactory.update = function(id,questionPackData) {
-      return $http.put('/api/question_packs/' + id,questionPackData);
+      return $http.post('http://125.212.233.51:9000/api/gmat/edit-question-pack' + id,questionPackData);
     };
 
     // delete a question pack
     questionpackFactory.delete = function(id) {
-      return $http.delete('/api/question_packs/' + id);
+      return $http.post('http://125.212.233.51:9000/api/gmat/delete-question-pack' + id);
     };
 
      //return our entire questionpackFactory object

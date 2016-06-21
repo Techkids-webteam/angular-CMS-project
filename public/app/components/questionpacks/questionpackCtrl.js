@@ -2,10 +2,11 @@ angular.module('questionpackCtrl', ['questionpackService']) // muon list o ben q
     .controller('questionpackController', function(Questionpack){
         var vm = this;
         vm.processing = true;
+        vm.mess = 'dm duy';
         Questionpack.all()
             .success(function(data) {
                 vm.processing = false;
-                vm.question_pack = data.question_pack;
+                vm.question_packs = data.question_packs;
             });
         vm.deleteQuestionPack = function(id) {
             vm.processing = true;
@@ -21,9 +22,10 @@ angular.module('questionpackCtrl', ['questionpackService']) // muon list o ben q
         };
     })
 
-    .controller('questionPackCreateController', function(Questionpack) {
+    .controller('questionpackCreateController', function(Questionpack) {
         var vm = this;
         vm.type = 'create';
+        vm.selectedQuestion = {};
         vm.selectedQuestion = {};
         vm.questionPackData = {
             question_ids: []
@@ -35,10 +37,7 @@ angular.module('questionpackCtrl', ['questionpackService']) // muon list o ben q
         };
 
         vm.addQuestion = function() {
-            var newQuestion = {
-                id: (vm.questionPackData.question_ids.length + 1),
-                ''
-            };
+            var newQuestion = {id:''};
             vm.questionPackData.question_ids.push(newQuestion);
             vm.selectedQuestion = angular.copy(newQuestion);
         };
@@ -69,7 +68,64 @@ angular.module('questionpackCtrl', ['questionpackService']) // muon list o ben q
         vm.saveQuestionPack = function() {
             vm.processing = true;
             vm.message = '';
-                Questionpack.update($routeParams.question_pack_id, vm.questionPackData)
+            Questionpack.update($routeParams.question_pack_id, vm.questionPackData)
+                .success(function(data) {
+                    vm.processing = false;
+                    vm.questionPackData = {};
+                    vm.message = data.message;
+                });
+        };
+    })
+
+    .controller('questionpackEditController', function($routeParams, Questionpack) {
+        var vm = this;
+        vm.type = 'edit';
+        vm.questionPackData = {
+            question_ids: []
+        };
+        vm.selectedQuestion = {};
+        Questionpack.get($routeParams.question_pack_id)
+            .success(function(data) {
+                vm.questionPackData = data;
+            });
+        vm.getTemplate = function(question) {
+            if (choice.id === vm.selectedQuestion.id) return 'edit';
+            else return 'display';
+        };
+
+        vm.addQuestion = function() {
+            var newQuestion = '';
+            vm.questionPackData.question_ids.push(newQuestion);
+            vm.selectedQuestion = angular.copy(newQuestion);
+        };
+
+        vm.editQuestion = function(question) {
+            vm.selectedQuestion = angular.copy(question);
+        };
+
+        vm.deleteQuestion = function(question) {
+            if (confirm("Delete this Question?")) {
+                for (var i = 0; i < vm.questionPackData.question_ids.length; i++) {
+                    if (vm.questionPackData.question_ids[i].id === question.id) {
+                        vm.questionPackData.question_ids.splice(i, 1);
+                    }
+                }
+            }
+        };
+
+        vm.saveColor = function(idx) {
+            vm.questionPackData.question_ids[idx] = angular.copy(vm.selectedQuestion);
+            vm.reset();
+        };
+
+        vm.reset = function() {
+            vm.selectedQuestion = {};
+        };
+
+        vm.saveQuestionPack = function() {
+            vm.processing = true;
+            vm.message = '';
+            Questionpack.update($routeParams.question_pack_id, vm.questionPackData)
                 .success(function(data) {
                     vm.processing = false;
                     vm.questionPackData = {};

@@ -47,6 +47,7 @@ angular.module('app.routes', ['ngRoute'])
             controller: 'questionCreateController',
             controllerAs: 'question'
         })
+
         .when('/questions/:question_id', {
             templateUrl: 'app/components/questions/views/single.html',
             controller: 'questionEditController',
@@ -56,6 +57,18 @@ angular.module('app.routes', ['ngRoute'])
         .when('/questionpacks',{
             templateUrl: 'app/components/questionpacks/views/all.html',
             controller: 'questionpackController',
+            controllerAs: 'questionpack'
+        })
+
+        .when('/questionpacks/create',{
+            templateUrl: 'app/components/questionpacks/views/single.html',
+            controller: 'questionpackCreateController',
+            controllerAs: 'questionpack'
+        })
+
+        .when('/questionpacks/:question_pack_id', {
+            templateUrl: 'app/components/questionpacks/views/single.html',
+            controller: 'questionpackEditController',
             controllerAs: 'questionpack'
         })
 

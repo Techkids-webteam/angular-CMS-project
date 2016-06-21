@@ -1,1 +1,94 @@
-<h1>{{questionpack.message}}</h1>
+<div class="page-header">
+    <h1>Question Pack</h1>
+    <a href="/questionpacks/create" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span>New Question Pack</a>
+</div>
+<!-- LOADING MESSAGE -->
+<div class="jumbotron text-center" ng-show="questionpack.processing">
+    <span class="glyphicon glyphicon-repeat spinner"></span>
+    <p>Loading Question Packs...</p>
+</div>
+<div class="jumbotron text-center">
+    <h2>Summary</h2>
+
+    <p>There are: {{questionpack.question_packs.length}} question packs in this list</p>
+    <span class="glyphicon glyphicon-search"></span>
+    <input type="search" ng-model="x" placeholder="filter question packs...">
+</div>
+<table class="table table-bordered table-striped" ng-show="questionpack.question_packs">
+    <thead>
+        <tr>
+            <th>
+                id
+            </th>
+            <th>available time</th>
+            <th>question_ids</th>
+            <th>level</th>
+            <!-- <th>answer_choices</th>
+            <th>right_answer</th> -->
+            <th class="col-sm-2"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in questionpack.question_packs | filter:x as results">
+            <td>{{$index + 1}}</td>
+            <td>{{item.available_time}}</td>
+            <td>
+                <ul ng-repeat="ids in item.question_ids">
+                    <li>
+                        {{ids}}
+                    </li>
+                </ul>
+            </td>
+            <td>
+                {{item.level}}
+            </td>
+
+            <td class="col-sm-2">
+                <a ng-href="/questions/{{item._id}}" class="btn btn-danger">Edit</a>
+                <a href="#" ng-click="question.deleteQuestion(item._id)" class="btn btn-primary">Delete</a>
+
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<div ng-controller="TodoController">
+    <h1>Todos</h1>
+    <h4>{{todos.length}} total</h4>
+    <ul>
+      <li ng-repeat="todo in filteredTodos">{{todo.text}}</li>
+    </ul>
+    <uib-pagination
+      ng-model="currentPage"
+      total-items="todos.length"
+      max-size="maxSize"
+      boundary-links="true">
+    </uib-pagination>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <uib-alert ng-repeat="alert in question.alerts" type="{{alert.type}}" close="question.closeAlert($index)">{{alert.msg}}</uib-alert>
+<button type="button" class='btn btn-default' ng-click="question.addAlert()">Add Alert</button>
+
+    <h4>Pager</h4>
+    <pre>You are currently on page {{question.currentPage}} </pre>
+    <uib-pager total-items="question.totalItems" ng-model="question.currentPage"></uib-pager> -->
+
+
+<!-- <pagination
+     max-size="5"
+     items-per-page="7"
+     total-items="question.questions"
+     ng-change="pageChanged()"></pagination> -->
