@@ -42,9 +42,9 @@ SHOW AND HIDE*/
 /*#content-views {position: relative;}
 .ng-enter, .ng-leave {width:100%; position: absolute;}
 .ng-enter {
-  -webkit-animation: slideInDown 1.5s both ease-in;
-  -moz-animation: slideInDown 1.5s both ease-in;
-  animation: slideInDown 1.5s both ease-in;
+  -webkit-animation: zoomInDown 1.5s both ease-in;
+  -moz-animation: zoomInDown 1.5s both ease-in;
+  animation: zoomInDown 1.5s both ease-in;
 }
 .ng-leave {
   -webkit-animation: zoomOutDown 0.5s both ease-in;

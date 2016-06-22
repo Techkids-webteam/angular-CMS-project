@@ -3,7 +3,7 @@ angular.module('questionService',[])
   var questionFactory = {};
   // get all question
   questionFactory.all = function() {
-    return $http.get('http://125.212.233.51:9000/api/gmat/questions');
+    return $http.get('/api/questions/');
   };
   // create a question
   questionFactory.create = function(questionData) {

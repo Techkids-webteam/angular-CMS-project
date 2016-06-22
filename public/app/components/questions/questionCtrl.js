@@ -2,36 +2,58 @@ angular.module('questionCtrl', ['questionService'])
     .controller('questionController', function(Question) {
         var vm = this;
         vm.processing = true;
-        // see more ======================
-        vm.numLimit = 80;
-        vm.readMore = function() {
-            vm.numLimit = 3000;
-        };
-        // //========== testing ===============
-        // vm.totalItems = 50;
-        // vm.currentPage = 1;
-        // vm.alerts = [{
-        //     type: 'danger',
-        //     msg: 'Oh snap! Change a few things up and try submitting again.'
-        // }, {
-        //     type: 'success',
-        //     msg: 'Well done! You successfully read this important alert message.'
-        // }];
-        //
-        // vm.addAlert = function() {
-        //     vm.alerts.push({
-        //         msg: 'Another alert!'
-        //     });
-        // };
-        //
-        // vm.closeAlert = function(index) {
-        //     vm.alerts.splice(index, 1);
-        // };
 
+        // // acordination
+        // vm.oneAtATime = true;
+        // vm.status = {
+        //     isCustomHeaderOpen: false,
+        //     isFirstOpen: true,
+        //     isFirstDisabled: false
+        // };
+        // // tabs
+        // vm.tabs = [{
+        //     title: 'Dynamic Title 1',
+        //     content: 'Dynamic content 1'
+        // }, {
+        //     title: 'Dynamic Title 2',
+        //     content: 'Dynamic content 2',
+        // },{
+        //     title: 'Dynamic Title 3',
+        //     content: 'Dynamic content 3',
+        // },{
+        //     title: 'Dynamic Title 4',
+        //     content: 'Dynamic content 4',
+        // }];
+        // vm.model = {
+        //     name: 'Tabs'
+        // };
+        // question all
         Question.all()
             .success(function(data) {
                 vm.processing = false;
                 vm.questions = data.questions;
+                vm.viewby = 10;
+                vm.totalItems = vm.questions.length;
+                vm.currentPage = 1;
+                vm.itemsPerPage = vm.viewby;
+                vm.maxSize = 5; //Number of pager buttons to show
+
+                vm.setPage = function(pageNo) {
+                    vm.currentPage = pageNo;
+                };
+
+                vm.pageChanged = function() {
+                    console.log('Page changed to: ' + vm.currentPage);
+                };
+
+                vm.setItemsPerPage = function(num) {
+                    vm.itemsPerPage = num;
+                    vm.currentPage = 1; //reset to first paghe
+                };
+                for (var i = 1; i < vm.questions.length; i++) {
+                    vm.questions[i].index = i;
+                    console.log(vm.questions[i].index);
+                }
             });
         vm.deleteQuestion = function(id) {
             vm.processing = true;
@@ -104,7 +126,7 @@ angular.module('questionCtrl', ['questionService'])
                 });
         };
     })
-    .controller('questionEditController', function($routeParams, Question) {
+    .controller('questionEditController', function($routeParams, Question,$location) {
         var vm = this;
         vm.type = 'edit';
         vm.questionData = {
@@ -161,6 +183,7 @@ angular.module('questionCtrl', ['questionService'])
                     vm.processing = false;
                     vm.questionData = {};
                     vm.message = data.message;
+                    $location.path("/questions");
                 });
         };
     })
@@ -173,38 +196,73 @@ angular.module('questionCtrl', ['questionService'])
             vm.numLimit = 300;
         };
     })
-    .controller('paginationController', function(Question) {
+    .controller('PaginationQuestionCtrl', function(Question) {
         var vm = this;
         Question.all()
             .success(function(data) {
                 vm.processing = false;
                 vm.questions = data.questions;
-                // pagination
+                vm.viewby = 10;
                 vm.totalItems = vm.questions.length;
-                console.log(vm.totalItems);
-                vm.currentPage = 2;
-                vm.pageChanged = function() {
-                    $log.log('Page changed to: ' + $scope.currentPage);
+                vm.currentPage = 4;
+                vm.itemsPerPage = vm.viewby;
+                vm.maxSize = 5; //Number of pager buttons to show
+
+                vm.setPage = function(pageNo) {
+                    vm.currentPage = pageNo;
                 };
+
+                vm.pageChanged = function() {
+                    console.log('Page changed to: ' + vm.currentPage);
+                };
+
+                vm.setItemsPerPage = function(num) {
+                    vm.itemsPerPage = num;
+                    vm.currentPage = 1; //reset to first paghe
+                };
+                for (var i = 1; i < vm.questions.length; i++) {
+                    vm.questions[i].index = i;
+                    console.log(vm.questions[i].index);
+                }
             });
+    })
+    .controller('PaginationDemoCtrl', function() {
+        var vm = this;
+        vm.data = [{
+            "name": "Abraham",
+            "id": "S7V 0W9"
+        }, {
+            "name": "Eleanor",
+            "id": "K7K 9P4"
+        }, {
+            "name": "Martina",
+            "id": "V0Z 5Q7"
+        }, {
+            "name": "Kelsie",
+            "id": "R7N 7P2"
+        }, {
+            "name": "Hedy",
+            "id": "B7E 7F2"
+        }, {
+            "name": "Hakeem",
+            "id": "S5P 3P6"
+        }];
+        vm.viewby = 10;
+        vm.totalItems = vm.data.length;
+        vm.currentPage = 4;
+        vm.itemsPerPage = vm.viewby;
+        vm.maxSize = 5; //Number of pager buttons to show
 
-    }).controller('TodoController', function($scope) {
-        $scope.filteredTodos = [], $scope.currentPage = 1, $scope.numPerPage = 10, $scope.maxSize = 5;
-        $scope.makeTodos = function() {
-            $scope.todos = [];
-            for (i = 1; i <= 1000; i++) {
-                $scope.todos.push({
-                    text: 'todo ' + i,
-                    done: false
-                });
-            }
+        vm.setPage = function(pageNo) {
+            vm.currentPage = pageNo;
         };
-        $scope.makeTodos();
 
-        $scope.$watch('currentPage + numPerPage', function() {
-            var begin = (($scope.currentPage - 1) * $scope.numPerPage),
-                end = begin + $scope.numPerPage;
+        vm.pageChanged = function() {
+            console.log('Page changed to: ' + vm.currentPage);
+        };
 
-            $scope.filteredTodos = $scope.todos.slice(begin, end);
-        });
+        vm.setItemsPerPage = function(num) {
+            vm.itemsPerPage = num;
+            vm.currentPage = 1; //reset to first paghe
+        };
     });
