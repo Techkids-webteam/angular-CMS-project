@@ -7,7 +7,7 @@ angular.module('questionService',[])
   };
   // create a question
   questionFactory.create = function(questionData) {
-    return $http.post('/api/questions/', questionData);
+    return $http.post('http://125.212.233.51:9000/api/gmat/post-question', questionData);
   } ;
 
   // get single question

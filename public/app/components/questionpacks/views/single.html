@@ -1,0 +1,77 @@
+<div class="page-header">
+    <h1 ng-if="questionpack.type=='create'">Create Question Pack</h1>
+    <h1 ng-if="questionpack.type=='edit'">Edit Question Pack</h1>
+</div>
+<form id="questionpackform" class="form-horizontal" ng-submit="questionpack.saveQuestionPack()">
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label">available time</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" ng-model="questionpack.questionPackData.available_time">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label">Question IDS</label>
+        <div class="col-sm-12">
+            <!-- <ol>
+              <li ng-repeat="choice in question.questionData.answer_choices">
+                <ul>
+                  <li>
+                    <label for="">Choice :</label>
+                    <input type="text" ng-model="choice.choice">
+                  </li>
+                  <li>
+                    <label for="">Explanation :</label>
+                    <input type="text" ng-model="choice.explanation">
+                  </li>
+                  <li>
+                    <label for="">Note :</label>
+                    <input type="text" ng-model="choice.note">
+                  </li>
+                </ul>
+              </li>
+            </ul> -->
+            <button type="button" ng-click="question.addQuestion()">
+              <span class="glyphicon glyphicon-plus text-success">Add</span>
+            </button>
+
+            <table class="table table-bordered table-striped">
+              <thead>
+                  <tr>
+                      <th>id</th>
+                      <th class="col-sm-2"></th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="question in questionpack.questionPackData.question_ids" ng-include="questionpack.getTemplate(question)">
+                </tr>
+              </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-6">
+            <button class="btn btn-success btn-lg btn-block" type="submit" ng-if="question.type=='create'">Create Question Pack</button>
+            <button class="btn btn-success btn-lg btn-block" type="submit" ng-if="question.type=='edit'">Update Question Pack</button>
+        </div>
+    </div>
+</form>
+<div class="row show-hide-message" ng-show="questionpack.message">
+  <div class="col-sm-6 col-sm-offset-2">
+    <div class="alert alert-info">{{questionpack.message}}</div>
+  </div>
+</div>
+
+<script id="display" type="text/ng-template">
+  <td>{{question}}</td>
+  <td>
+    <button ng-click="questionpack.editQuestion(question)"><span class="glyphicon glyphicon-edit text-warning"></span></button>
+    <button ng-click="questionpack.deleteQuestion(question)"><span class="glyphicon glyphicon-trash text-danger"></span></button>
+  </td>
+</script>
+<script id="edit" type="text/ng-template">
+  <td><input type="text" ng-model="questionpack.selectedQuestionPack.question" /></td>
+  <td>
+    <button ng-click="questionpack.saveColor($index)"><span class="glyphicon glyphicon-ok text-success"></span></button>
+    <button ng-click="questionpack.reset()"><span class="glyphicon glyphicon-remove text-danger"></span></button>
+  </td>
+</script>
