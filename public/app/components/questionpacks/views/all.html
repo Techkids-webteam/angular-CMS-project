@@ -53,19 +53,6 @@
 </table>
 
 
-<div ng-controller="TodoController">
-    <h1>Todos</h1>
-    <h4>{{todos.length}} total</h4>
-    <ul>
-      <li ng-repeat="todo in filteredTodos">{{todo.text}}</li>
-    </ul>
-    <uib-pagination
-      ng-model="currentPage"
-      total-items="todos.length"
-      max-size="maxSize"
-      boundary-links="true">
-    </uib-pagination>
-  </div>
 
 
 
