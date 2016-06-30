@@ -134,8 +134,8 @@ angular.module('questionCtrl', ['questionService'])
         };
         vm.selectedChoice = {};
         Question.get($routeParams.question_id)
-            .success(function(data) {
-                vm.questionData = data;
+            .success(function(res) {
+                vm.questionData = res.data;
             });
         vm.getTemplate = function(choice) {
             if (choice.id === vm.selectedChoice.id) return 'edit';
@@ -182,7 +182,7 @@ angular.module('questionCtrl', ['questionService'])
                 .success(function(data) {
                     vm.processing = false;
                     vm.questionData = {};
-                    vm.message = data.message;
+                    // vm.message = data.message;
                     $location.path("/questions");
                 });
         };
