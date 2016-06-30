@@ -15,7 +15,7 @@ angular.module('questionpackCtrl', ['questionpackService']) // muon list o ben q
                         Questionpack.all()
                             .success(function(data) {
                                 vm.processing = false;
-                                vm.question_pack = data.question_pack;
+                                vm.question_packs = data.question_packs;
                             });
                     });
             }
