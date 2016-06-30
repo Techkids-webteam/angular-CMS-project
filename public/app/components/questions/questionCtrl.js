@@ -56,41 +56,54 @@ angular.module('questionCtrl', ['questionService'])
                 }
             });
         vm.deleteQuestion = function(id) {
-            vm.processing = true;
-            Question.delete(id)
-                .success(function(data) {
-                    Question.all()
-                        .success(function(data) {
-                            vm.processing = false;
-                            vm.questions = data.questions;
-                        });
+            if (confirm("Delete this Question?")){
+                vm.processing = true;
+                Question.delete(id)
+                    .success(function(data) {
+                        Question.all()
+                            .success(function(data) {
+                                vm.processing = false;
+                                vm.questions = data.questions;
+                            });
 
-                });
+                    });
+            }
+
         };
     })
-    .controller('questionCreateController', function(Question) {
+    .controller('questionCreateController', function(Question, $location) {
         var vm = this;
         vm.type = 'create';
         vm.selectedChoice = {};
         vm.questionData = {
             answer_choices: []
         };
+        for (var i = 1 ; i < 6 ; i++){
+            newChoice = {
+                id: i,
+                choice: '',
+                explanation: '',
+                note: ''
+            }
+            vm.questionData.answer_choices.push(newChoice);
+        }
+
 
         vm.getTemplate = function(choice) {
             if (choice.id === vm.selectedChoice.id) return 'edit';
             else return 'display';
         };
 
-        vm.addChoice = function() {
-            var newChoice = {
-                id: (vm.questionData.answer_choices.length + 1),
-                choice: '',
-                explanation: '',
-                note: ''
-            };
-            vm.questionData.answer_choices.push(newChoice);
-            vm.selectedChoice = angular.copy(newChoice);
-        };
+        // vm.addChoice = function() {
+        //     var newChoice = {
+        //         id: (vm.questionData.answer_choices.length + 1),
+        //         choice: '',
+        //         explanation: '',
+        //         note: ''
+        //     };
+        //     vm.questionData.answer_choices.push(newChoice);
+        //     vm.selectedChoice = angular.copy(newChoice);
+        // };
 
         vm.editChoice = function(choice) {
             vm.selectedChoice = angular.copy(choice);
@@ -115,6 +128,8 @@ angular.module('questionCtrl', ['questionService'])
             vm.selectedChoice = {};
         };
 
+        vm.questionData.types = ["Q", "CR", "RC", "SC"];
+
         vm.saveQuestion = function() {
             vm.processing = true;
             vm.message = '';
@@ -123,6 +138,7 @@ angular.module('questionCtrl', ['questionService'])
                     vm.processing = false;
                     vm.questionData = {};
                     vm.message = data.message;
+                    $location.path("/questions");
                 });
         };
     })
