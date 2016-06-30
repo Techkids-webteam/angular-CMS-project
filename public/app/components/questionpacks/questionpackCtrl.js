@@ -2,34 +2,34 @@ angular.module('questionpackCtrl', ['questionpackService']) // muon list o ben q
     .controller('questionpackController', function(Questionpack){
         var vm = this;
         vm.processing = true;
-        vm.mess = 'dm duy';
         Questionpack.all()
             .success(function(data) {
                 vm.processing = false;
                 vm.question_packs = data.question_packs;
             });
         vm.deleteQuestionPack = function(id) {
-            vm.processing = true;
-            Questionpack.delete(id)
-                .success(function(data) {
-                    Questionpack.all()
-                        .success(function(data) {
-                            vm.processing = false;
-                            vm.question_pack = data.question_pack;
-                        });
-
-                });
+            if(confirm("Delete this Question Pack")){
+                vm.processing = true;
+                Questionpack.delete(id)
+                    .success(function(data) {
+                        Questionpack.all()
+                            .success(function(data) {
+                                vm.processing = false;
+                                vm.question_pack = data.question_pack;
+                            });
+                    });
+            }
         };
     })
 
-    .controller('questionpackCreateController', function(Questionpack) {
+    .controller('questionpackCreateController', function(Questionpack, $location) {
         var vm = this;
         vm.type = 'create';
-        vm.selectedQuestion = {};
         vm.selectedQuestion = {};
         vm.questionPackData = {
             question_ids: []
         };
+
 
         vm.getTemplate = function(question) {
             if (question.id === vm.selectedQuestion.id) return 'edit';

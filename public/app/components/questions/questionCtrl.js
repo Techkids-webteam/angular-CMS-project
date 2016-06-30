@@ -78,7 +78,7 @@ angular.module('questionCtrl', ['questionService'])
         vm.questionData = {
             answer_choices: []
         };
-        for (var i = 1 ; i < 6 ; i++){
+        for (var i = 0 ; i < 5 ; i++){
             newChoice = {
                 id: i,
                 choice: '',
@@ -128,7 +128,7 @@ angular.module('questionCtrl', ['questionService'])
             vm.selectedChoice = {};
         };
 
-        vm.questionData.types = ["Q", "CR", "RC", "SC"];
+        vm.questionData.types = ["Q", "C", "RC", "SC"];
 
         vm.saveQuestion = function() {
             vm.processing = true;
