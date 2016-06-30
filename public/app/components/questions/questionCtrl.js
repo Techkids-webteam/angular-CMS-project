@@ -75,7 +75,15 @@ angular.module('questionCtrl', ['questionService'])
         vm.questionData = {
             answer_choices: []
         };
-
+        for (var i = 1 ; i < 6 ; i++){
+                    newChoice = {
+                        id: i,
+                        choice: '',
+                        explanation: '',
+                        note: ''
+                    };
+                    vm.questionData.answer_choices.push(newChoice);
+                }
         vm.getTemplate = function(choice) {
             if (choice.id === vm.selectedChoice.id) return 'edit';
             else return 'display';
@@ -136,11 +144,12 @@ angular.module('questionCtrl', ['questionService'])
         Question.get($routeParams.question_id)
             .success(function(res) {
                 vm.questionData = res.data;
+                vm.getTemplate = function(choice) {
+                    if (choice.id) return 'edit';
+                    else return 'display';
+                };
             });
-        vm.getTemplate = function(choice) {
-            if (choice.id === vm.selectedChoice.id) return 'edit';
-            else return 'display';
-        };
+
 
         vm.addChoice = function() {
             var newChoice = {
