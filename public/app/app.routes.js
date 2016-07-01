@@ -72,6 +72,29 @@ angular.module('app.routes', ['ngRoute'])
             controllerAs: 'questionpack'
         })
 
+        // show all users
+        .when('/instructors', {
+            templateUrl: 'app/components/instructors/views/all.html',
+            controller: 'instructorController',
+            controllerAs: 'instructor'
+        })
+
+        // form to create a new user
+        // same view as edit page
+        .when('/instructors/create', {
+            templateUrl: 'app/components/instructors/views/single.html',
+            controller: 'instructorCreateController',
+            controllerAs: 'instructor'
+        })
+
+        // page to edit a user
+        .when('/instructors/:instructor_id', {
+                templateUrl: 'app/components/instructors/single.html',
+                controller: 'instructorEditController',
+                controllerAs: 'instructor'
+            })
+
+
     $locationProvider.html5Mode(true);
 
 });
