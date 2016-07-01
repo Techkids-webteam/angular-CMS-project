@@ -14,39 +14,79 @@
     <span class="glyphicon glyphicon-repeat spinner"></span>
     <p>Loading Questions...</p>
 </div>
+<!-- ============================= SEARCHBOX =============================== -->
 <div class="jumbotron text-center">
-    <h2>Summary</h2>
-
+    <h2>SEARCH BOX</h2>
     <p>There are: {{question.questions.length}} question in this list</p>
     <span class="glyphicon glyphicon-search"></span>
     <input type="search" ng-model="x" placeholder="filter questions...">
-</div>
-<table class="table table-bordered table-striped" ng-show="question.questions">
-    <thead>
-        <tr>
-            <th>N.o</th>
-            <th>type</th>
-            <th>sub_type</th>
-            <th>stimulus</th>
-            <th>stem</th>
-            <!-- <th>answer_choices</th>
-            <th>right_answer</th> -->
-            <th class="col-sm-2"></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="item in question.questions.slice(((question.currentPage-1)*question.itemsPerPage), ((question.currentPage)*question.itemsPerPage)) | filter:x as results" ng-init="numLimit=16000">
-            <td>{{item.index}}</td>
-            <td>{{item.type}}</td>
-            <td>{{item.sub_type}}</td>
-            <td>{{item.stimulus | limitTo:numLimit}}
-                <!-- <button type='button' ng-click="numLimit=1600">read more</button> -->
-            </td>
-            <td>{{item.stem | limitTo:numLimit}}
-                <!-- <button type='button' ng-click="numLimit=1600">read more</button> -->
-            </td>
 
-            <!-- <td>
+    <!-- ====== Searchbox result table ===== -->
+
+    <table ng-if="x" class="table table-bordered table-striped" ng-show="question.questions">
+        <thead>
+            <tr>
+                <th>N.o</th>
+                <th>type</th>
+                <th>sub_type</th>
+                <th>stimulus</th>
+                <th>stem</th>
+                <!-- <th>answer_choices</th>
+                <th>right_answer</th> -->
+                <th class="col-sm-2"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in question.questions|filter:x as results" ng-init="numLimit=16000">
+                <td>{{item.index}}</td>
+                <td>{{item.type}}</td>
+                <td>{{item.sub_type}}</td>
+                <td>{{item.stimulus | limitTo:numLimit}}
+                </td>
+                <td>{{item.stem | limitTo:numLimit}}
+                </td>
+                <td class="col-sm-2">
+                    <a ng-href="/questions/{{item._id}}" class="btn btn-danger">Edit</a>
+                    <a href="#" ng-click="question.deleteQuestion(item._id)" class="btn btn-primary">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- ========================== /END-SEARCHBOX ============================ -->
+<!-- ========================== TABLE DATA ============================ -->
+<section ng-if="!x">
+    <div class="jumbotron text-center">
+        <h2>Summary</h2>
+        <p>There are: {{question.questions.length}} question in this list</p>
+        <!-- <span class="glyphicon glyphicon-search"></span>
+        <input type="search" ng-model="x" placeholder="filter questions..."> -->
+        <table class="table table-bordered table-striped" ng-show="question.questions">
+            <thead>
+                <tr>
+                    <th>N.o</th>
+                    <th>type</th>
+                    <th>sub_type</th>
+                    <th>stimulus</th>
+                    <th>stem</th>
+                    <!-- <th>answer_choices</th>
+            <th>right_answer</th> -->
+                    <th class="col-sm-2"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in question.questions.slice(((question.currentPage-1)*question.itemsPerPage), ((question.currentPage)*question.itemsPerPage))" ng-init="numLimit=16000">
+                    <td>{{item.index}}</td>
+                    <td>{{item.type}}</td>
+                    <td>{{item.sub_type}}</td>
+                    <td>{{item.stimulus | limitTo:numLimit}}
+                        <!-- <button type='button' ng-click="numLimit=1600">read more</button> -->
+                    </td>
+                    <td>{{item.stem | limitTo:numLimit}}
+                        <!-- <button type='button' ng-click="numLimit=1600">read more</button> -->
+                    </td>
+
+                    <!-- <td>
                 <ol>
                     <li ng-repeat="choice in item.answer_choices">
                         <ul>
@@ -58,27 +98,28 @@
                 </ol>
             </td>
             <td>{{item.right_answer}}</td> -->
-            <td class="col-sm-2">
-                <a ng-href="/questions/{{item._id}}" class="btn btn-danger">Edit</a>
-                <a href="#" ng-click="question.deleteQuestion(item._id)" class="btn btn-primary">Delete</a>
+                    <td class="col-sm-2">
+                        <a ng-href="/questions/{{item._id}}" class="btn btn-danger">Edit</a>
+                        <a href="#" ng-click="question.deleteQuestion(item._id)" class="btn btn-primary">Delete</a>
 
-            </td>
-        </tr>
-    </tbody>
-</table>
-View
-<select ng-model="question.viewby" ng-change="question.setItemsPerPage(question.viewby)">
-    <option>3</option>
-    <option>5</option>
-    <option>10</option>
-    <option>20</option>
-    <option>30</option>
-    <option>40</option>
-    <option>50</option>
-</select> records at a time.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    View
+    <select ng-model="question.viewby" ng-change="question.setItemsPerPage(question.viewby)">
+        <option>3</option>
+        <option>5</option>
+        <option>10</option>
+        <option>20</option>
+        <option>30</option>
+        <option>40</option>
+        <option>50</option>
+    </select> records at a time.
 
-<uib-pagination total-items="question.totalItems" ng-model="question.currentPage" ng-change="question.pageChanged()" class="pagination-sm" items-per-page="question.itemsPerPage"></uib-pagination>
-
+    <uib-pagination total-items="question.totalItems" ng-model="question.currentPage" ng-change="question.pageChanged()" class="pagination-sm" items-per-page="question.itemsPerPage"></uib-pagination>
+</section>
 
 
 <!-- <uib-accordion close-others="question.oneAtATime">

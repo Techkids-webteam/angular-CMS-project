@@ -56,7 +56,7 @@ angular.module('questionCtrl', ['questionService'])
                 }
             });
         vm.deleteQuestion = function(id) {
-            if (confirm("Delete this Question?")){
+            if(confirm("Delete this Question?")){
                 vm.processing = true;
                 Question.delete(id)
                     .success(function(data) {
@@ -68,7 +68,6 @@ angular.module('questionCtrl', ['questionService'])
 
                     });
             }
-
         };
     })
     .controller('questionCreateController', function(Question, $location) {
@@ -78,17 +77,15 @@ angular.module('questionCtrl', ['questionService'])
         vm.questionData = {
             answer_choices: []
         };
-        for (var i = 0 ; i < 5 ; i++){
-            newChoice = {
-                id: i,
-                choice: '',
-                explanation: '',
-                note: ''
-            }
-            vm.questionData.answer_choices.push(newChoice);
-        }
-
-
+        for (var i = 1 ; i < 6 ; i++){
+                    newChoice = {
+                        id: i,
+                        choice: '',
+                        explanation: '',
+                        note: ''
+                    };
+                    vm.questionData.answer_choices.push(newChoice);
+                }
         vm.getTemplate = function(choice) {
             if (choice.id === vm.selectedChoice.id) return 'edit';
             else return 'display';
@@ -104,6 +101,8 @@ angular.module('questionCtrl', ['questionService'])
         //     vm.questionData.answer_choices.push(newChoice);
         //     vm.selectedChoice = angular.copy(newChoice);
         // };
+
+        vm.questionData.types = ["Q", "C", "RC", "SC"];
 
         vm.editChoice = function(choice) {
             vm.selectedChoice = angular.copy(choice);
@@ -128,8 +127,6 @@ angular.module('questionCtrl', ['questionService'])
             vm.selectedChoice = {};
         };
 
-        vm.questionData.types = ["Q", "C", "RC", "SC"];
-
         vm.saveQuestion = function() {
             vm.processing = true;
             vm.message = '';
@@ -152,11 +149,12 @@ angular.module('questionCtrl', ['questionService'])
         Question.get($routeParams.question_id)
             .success(function(res) {
                 vm.questionData = res.data;
+                vm.getTemplate = function(choice) {
+                    if (choice.id) return 'edit';
+                    else return 'display';
+                };
             });
-        vm.getTemplate = function(choice) {
-            if (choice.id === vm.selectedChoice.id) return 'edit';
-            else return 'display';
-        };
+
 
         vm.addChoice = function() {
             var newChoice = {

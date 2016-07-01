@@ -132,4 +132,4 @@ angular.module('questionpackCtrl', ['questionpackService']) // muon list o ben q
                     vm.message = data.message;
                 });
         };
-    })
+    });
