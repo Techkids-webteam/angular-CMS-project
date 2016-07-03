@@ -10,39 +10,69 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="" class="col-sm-2 control-label">Question IDS</label>
+        <label for="" class="col-sm-2 control-label">level</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" ng-model="questionpack.questionPackData.level">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label">question_ids</label>
+        <!-- ============================= SEARCHBOX =============================== -->
+        <div class="jumbotron text-center" ng-controller="questionController as question">
+            <h2>SEARCH BOX</h2>
+            <p>There are: {{question.questions.length}} questions to add</p>
+            <span class="glyphicon glyphicon-search"></span>
+            <input type="search" ng-model="x" placeholder="filter questions...">
+
+            <!-- ====== Searchbox result table ===== -->
+
+            <table ng-if="x" class="table table-bordered table-striped" ng-show="question.questions">
+                <thead>
+                    <tr>
+                        <th>N.o</th>
+                        <th>type</th>
+                        <th>sub_type</th>
+                        <th>stimulus</th>
+                        <th>stem</th>
+                        <!-- <th>answer_choices</th>
+                        <th>right_answer</th> -->
+                        <th class="col-sm-2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in question.questions|filter:x as results" ng-init="numLimit=16000">
+                        <td>{{item.index}}</td>
+                        <td>{{item.type}}</td>
+                        <td>{{item.sub_type}}</td>
+                        <td>{{item.stimulus | limitTo:numLimit}}
+                        </td>
+                        <td>{{item.stem | limitTo:numLimit}}
+                        </td>
+                        <td class="col-sm-2">
+                            <a href="#" ng-click="question.addQuestion(item._id)" class="btn btn-primary">Add</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- ========================== /END-SEARCHBOX ============================ -->
         <div class="col-sm-12">
-            <!-- <ol>
-              <li ng-repeat="choice in question.questionData.answer_choices">
-                <ul>
-                  <li>
-                    <label for="">Choice :</label>
-                    <input type="text" ng-model="choice.choice">
-                  </li>
-                  <li>
-                    <label for="">Explanation :</label>
-                    <input type="text" ng-model="choice.explanation">
-                  </li>
-                  <li>
-                    <label for="">Note :</label>
-                    <input type="text" ng-model="choice.note">
-                  </li>
-                </ul>
-              </li>
-            </ul> -->
-            <button type="button" ng-click="question.addQuestion()">
+            <!-- <button type="button" ng-click="question.addQuestion()">
               <span class="glyphicon glyphicon-plus text-success">Add</span>
-            </button>
+            </button> -->
 
             <table class="table table-bordered table-striped">
               <thead>
                   <tr>
+                      <th>items</th>
                       <th>id</th>
-                      <th class="col-sm-2"></th>
                   </tr>
               </thead>
               <tbody>
                 <tr ng-repeat="question in questionpack.questionPackData.question_ids" ng-include="questionpack.getTemplate(question)">
+                    <td>
+                        {{question}}
+                    </td>
                 </tr>
               </tbody>
             </table>
@@ -50,8 +80,8 @@
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-6">
-            <button class="btn btn-success btn-lg btn-block" type="submit" ng-if="question.type=='create'">Create Question Pack</button>
-            <button class="btn btn-success btn-lg btn-block" type="submit" ng-if="question.type=='edit'">Update Question Pack</button>
+            <button class="btn btn-success btn-lg btn-block" type="submit" ng-if="questionpack.type=='create'" style = "margin: 20px 96px;">Create Question Pack</button>
+            <button class="btn btn-success btn-lg btn-block" type="submit" ng-if="questionpack.type=='edit'" style = "margin: 20px 96px;">Update Question Pack</button>
         </div>
     </div>
 </form>
@@ -61,17 +91,19 @@
   </div>
 </div>
 
-<script id="display" type="text/ng-template">
+<script id="display" type="text/ng-template" ng-if="questionpack.type=='edit'">
+  <td>{{$index + 1}}</td>
   <td>{{question}}</td>
   <td>
-    <button ng-click="questionpack.editQuestion(question)"><span class="glyphicon glyphicon-edit text-warning"></span></button>
-    <button ng-click="questionpack.deleteQuestion(question)"><span class="glyphicon glyphicon-trash text-danger"></span></button>
+    <button type="button" ng-click="questionpack.editQuestion(question)"><span class="glyphicon glyphicon-edit text-warning"></span></button>
+    <button type="button" ng-click="questionpack.deleteQuestion(question)"><span class="glyphicon glyphicon-trash text-danger"></span></button>
   </td>
 </script>
 <script id="edit" type="text/ng-template">
-  <td><input type="text" ng-model="questionpack.selectedQuestionPack.question" /></td>
+    <td>{{$index+1}}</td>
+  <td><input type="text" ng-model="question" /></td>
   <td>
-    <button ng-click="questionpack.saveColor($index)"><span class="glyphicon glyphicon-ok text-success"></span></button>
-    <button ng-click="questionpack.reset()"><span class="glyphicon glyphicon-remove text-danger"></span></button>
+    <button type="button" ng-click="questionpack.saveColor($index)"><span class="glyphicon glyphicon-ok text-success"></span></button>
+    <button type="button" ng-click="questionpack.reset()"><span class="glyphicon glyphicon-remove text-danger"></span></button>
   </td>
 </script>

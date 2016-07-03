@@ -36,10 +36,9 @@ angular.module('questionpackCtrl', ['questionpackService']) // muon list o ben q
             else return 'display';
         };
 
-        vm.addQuestion = function() {
-            var newQuestion = {id:''};
-            vm.questionPackData.question_ids.push(newQuestion);
-            vm.selectedQuestion = angular.copy(newQuestion);
+        vm.addQuestion = function(id) {
+            vm.questionPackData.question_ids.push(id);
+            vm.selectedQuestion = angular.copy(id);
         };
 
         vm.editQuestion = function(question) {
@@ -68,16 +67,17 @@ angular.module('questionpackCtrl', ['questionpackService']) // muon list o ben q
         vm.saveQuestionPack = function() {
             vm.processing = true;
             vm.message = '';
-            Questionpack.update($routeParams.question_pack_id, vm.questionPackData)
+            Questionpack.create(vm.questionPackData)
                 .success(function(data) {
                     vm.processing = false;
                     vm.questionPackData = {};
                     vm.message = data.message;
+                    $location.path("/questionpacks");
                 });
         };
     })
 
-    .controller('questionpackEditController', function($routeParams, Questionpack) {
+    .controller('questionpackEditController', function($routeParams, Questionpack, $location) {
         var vm = this;
         vm.type = 'edit';
         vm.questionPackData = {
@@ -85,18 +85,19 @@ angular.module('questionpackCtrl', ['questionpackService']) // muon list o ben q
         };
         vm.selectedQuestion = {};
         Questionpack.get($routeParams.question_pack_id)
-            .success(function(data) {
-                vm.questionPackData = data;
+            .success(function(res) {
+                vm.questionPackData = res.data;
+                vm.getTemplate = function(question) {
+                    if (!question) return 'edit';
+                    else return 'display';
+                };
             });
-        vm.getTemplate = function(question) {
-            if (choice.id === vm.selectedQuestion.id) return 'edit';
-            else return 'display';
-        };
 
         vm.addQuestion = function() {
-            var newQuestion = '';
-            vm.questionPackData.question_ids.push(newQuestion);
-            vm.selectedQuestion = angular.copy(newQuestion);
+            id: (vm.questionPackData.question_ids.length + 1),
+            // var newQuestion = ''
+            vm.questionPackData.question_ids.push(question);
+            vm.selectedQuestion = angular.copy(question);
         };
 
         vm.editQuestion = function(question) {
@@ -130,6 +131,7 @@ angular.module('questionpackCtrl', ['questionpackService']) // muon list o ben q
                     vm.processing = false;
                     vm.questionPackData = {};
                     vm.message = data.message;
+                    $location.path("/questionpacks");
                 });
         };
     });
