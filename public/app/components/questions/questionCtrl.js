@@ -150,8 +150,9 @@ angular.module('questionCtrl', ['questionService'])
         Question.get($routeParams.question_id)
             .success(function(res) {
                 vm.questionData = res.data;
+                console.log(vm.questionData);
                 vm.getTemplate = function(choice) {
-                    if (choice.id) return 'edit';
+                    if (choice.index === vm.selectedChoice.index) return 'edit';
                     else return 'display';
                 };
             });
@@ -169,6 +170,7 @@ angular.module('questionCtrl', ['questionService'])
         };
 
         vm.editChoice = function(choice) {
+            console.log(choice);
             vm.selectedChoice = angular.copy(choice);
         };
 
