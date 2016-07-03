@@ -275,7 +275,7 @@ angular.module('questionCtrl', ['questionService'])
         };
 
         vm.pageChanged = function() {
-            console.log('Page changed to: ' + vm.currentPage);
+            console.log('Page changed to: '+ vm.currentPage);
         };
 
         vm.setItemsPerPage = function(num) {
