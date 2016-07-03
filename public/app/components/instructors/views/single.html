@@ -1,35 +1,41 @@
+
+
+
+
+
+
 <div class="page-header">
-    <h1 ng-if="user.type=='create'">Create User</h1>
-    <h1 ng-if="user.type=='edit'">Edit User</h1>
+    <h1 ng-if="instructor.type=='create'">Create instructor</h1>
+    <h1 ng-if="instructor.type=='edit'">Edit instructor</h1>
 </div>
-<form class="form-horizontal" ng-submit="user.saveUser()">
+<form class="form-horizontal" ng-submit="instructor.saveInstructor()">
     <div class="form-group">
         <label class="col-sm-2 control-label">Name</label>
         <div class="col-sm-6">
-            <input type="text" class="form-control" ng-model="user.userData.name">
+            <input type="text" class="form-control" ng-model="instructor.instructorData.name">
         </div>
     </div>
     <div class="form-group">
         <label for="" class="col-sm-2 control-label">Username</label>
         <div class="col-sm-6">
-            <input type="text" class="form-control" ng-model="user.userData.username">
+            <input type="text" class="form-control" ng-model="instructor.instructorData.username">
         </div>
     </div>
     <div class="form-group">
         <label for="" class="col-sm-2 control-label">Password</label>
         <div class="col-sm-6">
-            <input type="password" class="form-control" ng-model="user.userData.password">
+            <input type="password" class="form-control" ng-model="instructor.instructorData.password">
         </div>
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-6">
-            <button class="btn btn-success btn-lg btn-block" type="submit" ng-if="user.type=='create'">Create User</button>
-            <button class="btn btn-success btn-lg btn-block" type="submit" ng-if="user.type=='edit'">Update User</button>
+            <button class="btn btn-success btn-lg btn-block" type="submit" ng-if="instructor.type=='create'">Create User</button>
+            <button class="btn btn-success btn-lg btn-block" type="submit" ng-if="instructor.type=='edit'">Update User</button>
         </div>
     </div>
 </form>
-<div class="row show-hide-message" ng-show="user.message">
+<div class="row show-hide-message" ng-show="instructor.message">
   <div class="col-sm-6 col-sm-offset-2">
-    <div class="alert alert-info">{{user.message}}</div>
+    <div class="alert alert-info">{{instructor.message}}</div>
   </div>
 </div>

@@ -7,27 +7,27 @@ angular.module('instructorService', [])
 
 	// get a single user
 	instructorFactory.get = function(id) {
-		return $http.get('/api/instructors/' + id);
+		return $http.get('/api/users/' + id);
 	};
 
 	// get all users
 	instructorFactory.all = function() {
-		return $http.get('/api/instructors/');
+		return $http.get('/api/users/');
 	};
 
 	// create a user
 	instructorFactory.create = function(userData) {
-		return $http.post('/api/instructors/', userData);
+		return $http.post('/api/users/', userData);
 	};
 
 	// update a user
 	instructorFactory.update = function(id, userData) {
-		return $http.put('/api/instructors/' + id, userData);
+		return $http.put('/api/users/' + id, userData);
 	};
 
 	// delete a user
 	instructorFactory.delete = function(id) {
-		return $http.delete('/api/instructors/' + id);
+		return $http.delete('/api/users/' + id);
 	};
 
 	// return our entire userFactory object

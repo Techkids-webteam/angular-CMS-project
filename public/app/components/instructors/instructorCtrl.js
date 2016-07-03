@@ -9,7 +9,8 @@ angular.module('instructorCtrl', ['instructorService'])
         vm.instructors= data;
       });
         // function to delete a user
-    vm.deleteInstructor = function(id) {
+    vm.deleteInstructor = deleteInstructor;
+    function deleteInstructor(id) {
       vm.processing = true;
       // accepts the user id as a parameter
       Instructor.delete(id)
@@ -23,9 +24,48 @@ angular.module('instructorCtrl', ['instructorService'])
               vm.instructors = data;
             });
         });
-    };
+    }
 
+    // inline editing
+    vm.selected = {};
+    vm.getTemplate = getTemplate;
+    vm.editInstructor = editInstructor;
+    vm.reset = reset;
+    vm.saveInstructor = saveInstructor;
 
+    function editInstructor(people) {
+      vm.selected = angular.copy(people);
+    }
+    function getTemplate(person) {
+     if (person._id === vm.selected._id){
+      console.log("edit");
+      return 'edit';
+     }
+     else return 'display';
+    }
+    function reset() {
+      vm.selected = {};
+    }
+    function saveInstructor(_id) {
+      vm.processing = true;
+      vm.message = '';
+      console.log(vm.selected);
+      vm.instructors._id = angular.copy(vm.selected);
+      console.log(vm.instructors._id);
+      console.log(_id);
+      //call the userService function to update
+      Instructor.update(_id, vm.selected)
+      .success(function(data) {
+        vm.processing = false;
+        Instructor.all()
+          .success(function(data) {        // when all the users come back, remove the processing variable
+            vm.processing = false;
+            // bind the users that come back to vm.users
+            vm.instructors= data;
+          });
+      });
+      vm.reset();
+    }
   })
   //controller applied to user create page
   .controller('instructorCreateController', function(Instructor) {
@@ -65,13 +105,13 @@ angular.module('instructorCtrl', ['instructorService'])
       vm.processing = true;
       vm.message = '';
       //call the userService function to update
-      Instructor.update($routeParams.instructor_id,vm.instructorData)
-        .success(function(data) {
-          vm.processing = false;
-          //clear the form
-          vm.instructorData={};
-          //bind the message from our API to vm.message
-          vm.message = data.message;
-        });
+      Instructor.update($routeParams.instructor_id, vm.instructorData)
+      .success(function(data) {
+        vm.processing = false;
+        //clear the form
+        vm.instructorData = {};
+        //bind the message from our API to vm.message
+        vm.message = data.message;
+      });
     };
   });

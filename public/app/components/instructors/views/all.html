@@ -1,14 +1,14 @@
 <div class="page-header">
-    <h1>Users</h1>
-    <a href="/users/create" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span>New User</a>
+    <h1>Instructors</h1>
+    <a href="/instructors/create" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span>New User</a>
 </div>
 <!-- LOADING MESSAGE -->
-<div class="jumbotron text-center" ng-show="user.processing">
+<div class="jumbotron text-center" ng-show="instructor.processing">
     <span class="glyphicon glyphicon-repeat spinner"></span>
     <p>Loading Users...</p>
 </div>
 
-<table class="table table-bordered table-striped table-hover" ng-show="user.users">
+<table class="table table-bordered table-striped table-hover" ng-show="instructor.instructors">
     <thead>
         <tr>
             <!-- <th>_id</th> -->
@@ -18,14 +18,32 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="person in user.users">
+        <tr ng-repeat="person in instructor.instructors"  ng-include="instructor.getTemplate(person)">
             <!-- <td>{{person._id}}</td> -->
             <td>{{person.name}}</td>
             <td>{{person.username}}</td>
             <td class="col-sm-3 text-center">
-              <a ng-href="/users/{{person._id}}" class="btn btn-primary">Edit</a>
-              <a href="#" ng-click="user.deleteUser(person._id)" class="btn btn-danger">Delete</a>
+              <a ng-click="instructor.editInstructor(person)" class="btn btn-primary">Edit</a>
+              <a href="#" ng-click="instructor.deleteInstructor(person._id)" class="btn btn-danger">Delete</a>
             </td>
         </tr>
     </tbody>
 </table>
+
+
+<script type="text/ng-template" id="display">
+    <td>{{person.name}}</td>
+    <td>{{person.username}}</td>
+    <td>
+     <button type="button" class="btn btn-primary" ng-click="instructor.editInstructor(person)">Edit</button>
+     <button type="button" class="btn btn-danger" ng-click="instructor.deleteInstructor(person._id)">Delete</button>
+    </td>
+</script>
+<script type="text/ng-template" id="edit">
+<td><input type="text" ng-model="instructor.selected.name" class="form-control input-sm"/></td>
+<td><input type="text" ng-model="instructor.selected.username" class="form-control input-sm"/></td>
+<td>
+ <button type="button" class="btn btn-primary" ng-click="instructor.saveInstructor(person._id)">Save</button>
+ <button type="button" class="btn btn-danger" ng-click="instructor.reset()">Cancel</button>
+</td>
+</script>
