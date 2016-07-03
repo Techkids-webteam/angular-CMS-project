@@ -56,7 +56,7 @@ angular.module('questionCtrl', ['questionService'])
                 }
             });
         vm.deleteQuestion = function(id) {
-            if(confirm("Delete this Question?")){
+            if (confirm("Delete this Question?")){
                 vm.processing = true;
                 Question.delete(id)
                     .success(function(data) {
@@ -68,6 +68,7 @@ angular.module('questionCtrl', ['questionService'])
 
                     });
             }
+
         };
     })
     .controller('questionCreateController', function(Question, $location) {
@@ -102,8 +103,6 @@ angular.module('questionCtrl', ['questionService'])
         //     vm.selectedChoice = angular.copy(newChoice);
         // };
 
-        vm.questionData.types = ["Q", "C", "RC", "SC"];
-
         vm.editChoice = function(choice) {
             vm.selectedChoice = angular.copy(choice);
         };
@@ -127,6 +126,8 @@ angular.module('questionCtrl', ['questionService'])
             vm.selectedChoice = {};
         };
 
+        vm.questionData.types = ["Q", "C", "RC", "SC"];
+
         vm.saveQuestion = function() {
             vm.processing = true;
             vm.message = '';
@@ -149,8 +150,9 @@ angular.module('questionCtrl', ['questionService'])
         Question.get($routeParams.question_id)
             .success(function(res) {
                 vm.questionData = res.data;
+                console.log(vm.questionData);
                 vm.getTemplate = function(choice) {
-                    if (choice.id) return 'edit';
+                    if (choice.index === vm.selectedChoice.index) return 'edit';
                     else return 'display';
                 };
             });
@@ -168,6 +170,7 @@ angular.module('questionCtrl', ['questionService'])
         };
 
         vm.editChoice = function(choice) {
+            console.log(choice);
             vm.selectedChoice = angular.copy(choice);
         };
 
