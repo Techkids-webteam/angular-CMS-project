@@ -40,7 +40,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="item in question.questions|filter:x as results" ng-init="numLimit=16000">
+                    <tr ng-repeat="item in question.questions|filter:x as results track by $index" ng-init="numLimit=16000">
                         <td>{{item.index}}</td>
                         <td>{{item.type}}</td>
                         <td>{{item.sub_type}}</td>
@@ -49,7 +49,7 @@
                         <td>{{item.stem | limitTo:numLimit}}
                         </td>
                         <td class="col-sm-2">
-                            <a href="#" ng-click="question.addQuestion(item._id)" class="btn btn-primary">Add</a>
+                            <a href="#" ng-click="questionpack.addQuestionId(item._id)" class="btn btn-primary">Add</a>
                         </td>
                     </tr>
                 </tbody>
@@ -69,9 +69,32 @@
                   </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="question in questionpack.questionPackData.question_ids" ng-include="questionpack.getTemplate(question)">
+                <tr ng-repeat="id in questionpack.questionPackData.question_ids track by $index" ng-include="questionpack.getTemplate(id)">
                     <td>
-                        {{question}}
+                        {{id}}
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <table  ng-controller="questionController as question"  class="table table-bordered table-striped">
+              <thead>
+                  <tr>
+                      <th>Index</th>
+                      <th>_id</th>
+                      <th>stimulus</th>
+                      <th>Action</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="item in question.questions | filter: questionpack.filterArray" ng-init="numLimit=16000">
+                    <td>{{$index+1}}</td>
+                    <td>
+                        {{item._id}}
+                    </td>
+                    <td>{{item.stimulus}}</td>
+                    <td>
+                      <button type="button" ng-click="questionpack.deleteQuestionId(item._id)"><span class="glyphicon glyphicon-trash text-danger"></span></button>
                     </td>
                 </tr>
               </tbody>
@@ -91,19 +114,18 @@
   </div>
 </div>
 
-<script id="display" type="text/ng-template" ng-if="questionpack.type=='edit'">
+<script id="display" type="text/ng-template">
   <td>{{$index + 1}}</td>
-  <td>{{question}}</td>
+  <td>{{id}}</td>
   <td>
-    <button type="button" ng-click="questionpack.editQuestion(question)"><span class="glyphicon glyphicon-edit text-warning"></span></button>
-    <button type="button" ng-click="questionpack.deleteQuestion(question)"><span class="glyphicon glyphicon-trash text-danger"></span></button>
+    <button type="button" ng-click="questionpack.deleteQuestionId(id)"><span class="glyphicon glyphicon-trash text-danger"></span></button>
   </td>
 </script>
-<script id="edit" type="text/ng-template">
+<!-- <script id="edit" type="text/ng-template">
     <td>{{$index+1}}</td>
-  <td><input type="text" ng-model="question" /></td>
+  <td><input type="text" ng-model="id" /></td>
   <td>
     <button type="button" ng-click="questionpack.saveColor($index)"><span class="glyphicon glyphicon-ok text-success"></span></button>
     <button type="button" ng-click="questionpack.reset()"><span class="glyphicon glyphicon-remove text-danger"></span></button>
   </td>
-</script>
+</script> -->

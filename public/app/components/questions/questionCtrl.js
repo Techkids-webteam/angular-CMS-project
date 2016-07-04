@@ -52,7 +52,7 @@ angular.module('questionCtrl', ['questionService'])
                 };
                 for (var i = 1; i < vm.questions.length; i++) {
                     vm.questions[i].index = i;
-                    console.log(vm.questions[i].index);
+
                 }
             });
         vm.deleteQuestion = function(id) {
@@ -150,7 +150,7 @@ angular.module('questionCtrl', ['questionService'])
         Question.get($routeParams.question_id)
             .success(function(res) {
                 vm.questionData = res.data;
-                console.log(vm.questionData);
+                
                 vm.getTemplate = function(choice) {
                     if (choice.index === vm.selectedChoice.index) return 'edit';
                     else return 'display';
