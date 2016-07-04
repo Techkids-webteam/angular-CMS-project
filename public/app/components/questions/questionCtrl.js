@@ -80,7 +80,7 @@ angular.module('questionCtrl', ['questionService'])
         };
         for (var i = 1 ; i < 6 ; i++){
                     newChoice = {
-                        id: i,
+                        index: i,
                         choice: '',
                         explanation: '',
                         note: ''
@@ -88,7 +88,7 @@ angular.module('questionCtrl', ['questionService'])
                     vm.questionData.answer_choices.push(newChoice);
                 }
         vm.getTemplate = function(choice) {
-            if (choice.id === vm.selectedChoice.id) return 'edit';
+            if (choice.index === vm.selectedChoice.index) return 'edit';
             else return 'display';
         };
 
