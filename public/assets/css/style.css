@@ -53,3 +53,14 @@ SHOW AND HIDE*/
 }*/
 
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+.createQuestion {
+  font-size: larger;
+}
+
+.setbackground {
+
+}
+
+
+.combobox{}

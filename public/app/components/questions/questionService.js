@@ -22,7 +22,12 @@ angular.module('questionService',[])
   questionFactory.delete = function(id) {
     return $http.post('http://125.212.233.51:9000/api/gmat/delete-question/'+ id);
   };
+  // json file of type
+  questionFactory.type = function() {
+    return $http.get('/api/questionstype');
+  };
   //return our entire questionFactory object
+
   return questionFactory;
 
 });

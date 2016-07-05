@@ -1,0 +1,82 @@
+{
+    "type": [{
+        "sub_types": [{
+            "detail": "Miscellaneous",
+            "code": "MISC"
+        }],
+        "detail": "Sentence Correction",
+        "code": "SC"
+    }, {
+        "sub_types": [{
+            "detail": "Must be true",
+            "code": "MBT"
+        }, {
+            "detail": "Weaken",
+            "code": "W"
+        }, {
+            "detail": "Strengthen",
+            "code": "S"
+        }, {
+            "detail": "Evaluate",
+            "code": "E"
+        }, {
+            "detail": "Assumption",
+            "code": "A"
+        }, {
+            "detail": "Resolve the paradox",
+            "code": "RTP"
+        }, {
+            "detail": "Bold face",
+            "code": "BF"
+        }, {
+            "detail": "Miscellaneous",
+            "code": "MISC"
+        }],
+        "detail": "Critical Reasoning",
+        "code": "CR"
+    }, {
+        "sub_types": [{
+            "detail": "Main Idea",
+            "code": "MI"
+        }, {
+            "detail": "detail",
+            "code": "D"
+        }, {
+            "detail": "Inference",
+            "code": "INF"
+        }, {
+            "detail": "Out of context",
+            "code": "OOC"
+        }, {
+            "detail": "Logical structure",
+            "code": "LS"
+        }, {
+            "detail": "Author's tone",
+            "code": "AT"
+        }, {
+            "detail": "Miscellaneous",
+            "code": "MISC"
+        }],
+        "detail": "Reading Comprehension",
+        "code": "RC"
+    }, {
+        "sub_types": [{
+            "detail": "Arithmetic",
+            "code": "ARTH"
+        }, {
+            "detail": "Algebra",
+            "code": "ALG"
+        }, {
+            "detail": "Geometry",
+            "code": "GEO"
+        }, {
+            "detail": "World Problems",
+            "code": "WP"
+        }, {
+            "detail": "Miscellaneous",
+            "code": "MISC"
+        }],
+        "detail": "Quantitative",
+        "code": "Q"
+    }]
+}

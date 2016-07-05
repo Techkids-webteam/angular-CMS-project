@@ -42,6 +42,15 @@ app.use('/api',question_api_Router);
 // MAIN CATCHALL ROUTE ---------------
 // SEND USERS TO FRONTEND ------------
 // has to be registered after API ROUTES
+
+app.get('/api/hehe', function(req,res) {
+	res.sendFile(path.join( __dirname + '/public/assets/typedata.json'));
+});
+//sory for that, but I can't put that API to API file because I don't know how to read json file in there :(
+app.get('/api/questionstype', function(req,res) {
+	res.sendFile(path.join( __dirname + '/public/assets/typedata.json'));
+});
+
 app.get('*', function(req,res) {
 	res.sendFile(path.join( __dirname + '/public/app/views/index.html'));
 });

@@ -2,130 +2,257 @@
     <h1 ng-if="questionpack.type=='create'">Create Question Pack</h1>
     <h1 ng-if="questionpack.type=='edit'">Edit Question Pack</h1>
 </div>
-<form id="questionpackform" class="form-horizontal" ng-submit="questionpack.saveQuestionPack()">
-    <div class="form-group">
-        <label for="" class="col-sm-2 control-label">available time</label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control" ng-model="questionpack.questionPackData.available_time">
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="" class="col-sm-2 control-label">level</label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control" ng-model="questionpack.questionPackData.level">
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="" class="col-sm-2 control-label">question_ids</label>
-        <!-- ============================= SEARCHBOX =============================== -->
-        <div class="jumbotron text-center" ng-controller="questionController as question">
-            <h2>SEARCH BOX</h2>
-            <p>There are: {{question.questions.length}} questions to add</p>
-            <span class="glyphicon glyphicon-search"></span>
-            <input type="search" ng-model="x" placeholder="filter questions...">
 
-            <!-- ====== Searchbox result table ===== -->
 
-            <table ng-if="x" class="table table-bordered table-striped" ng-show="question.questions">
-                <thead>
-                    <tr>
-                        <th>N.o</th>
-                        <th>type</th>
-                        <th>sub_type</th>
-                        <th>stimulus</th>
-                        <th>stem</th>
-                        <!-- <th>answer_choices</th>
-                        <th>right_answer</th> -->
-                        <th class="col-sm-2"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="item in question.questions|filter:x as results track by $index" ng-init="numLimit=16000">
-                        <td>{{item.index}}</td>
-                        <td>{{item.type}}</td>
-                        <td>{{item.sub_type}}</td>
-                        <td>{{item.stimulus | limitTo:numLimit}}
-                        </td>
-                        <td>{{item.stem | limitTo:numLimit}}
-                        </td>
-                        <td class="col-sm-2">
-                            <a href="#" ng-click="questionpack.addQuestionId(item._id)" class="btn btn-primary">Add</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <!-- ========================== /END-SEARCHBOX ============================ -->
-        <div class="col-sm-12">
-            <!-- <button type="button" ng-click="question.addQuestion()">
-              <span class="glyphicon glyphicon-plus text-success">Add</span>
-            </button> -->
+<!-- Create new question toogle bar -->
+<div>
+    <uib-accordion close-others="oneAtATime" class="setbackground">
+        <uib-accordion-group>
+            <uib-accordion-heading>
+                <button type="button" class="createQuestion btn btn-success">CREATE QUESTION HERE</button>
+            </uib-accordion-heading>
+            <div ng-controller="questionCreateController as question">
+                <form id="questionform" class="form-horizontal" ng-submit="question.saveQuestion()">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">type</label>
+                        <div class="col-sm-6">
+                            <select style="height:33px" ng-model="question.questionData.type"
+                            ng-change="question.changeType(question.questionData.type)">
+                              <option ng-repeat="type in question.typelist" value="{{type.code}}">{{type.detail}}</option>
+                            </select>
+                            <h3 style="display:inline">{{question.questionData.type}}</h3>
 
-            <table class="table table-bordered table-striped">
-              <thead>
-                  <tr>
-                      <th>items</th>
-                      <th>id</th>
-                  </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="id in questionpack.questionPackData.question_ids track by $index" ng-include="questionpack.getTemplate(id)">
+                        </div>
+                    </div>
+                    <!-- <div class="form-group">
+                        <label class="col-sm-2 control-label">type</label>
+                        <div class="col-sm-6">
+                            <select style="height:33px" ng-model="question.questionData.type"
+                            ng-change="question.changeType(question.questionData.type)">
+                              <option ng-repeat="type in question.typelist" value="type.code" >{{type.detail}}</option>
+                            </select>
+                            <h1>{{question.questionData.type}}</h1>
+                        </div>
+                    </div> -->
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">sub_type</label>
+                        <div class="col-sm-6">
+                            <select style="height:33px" ng-model="question.questionData.sub_type">
+                              <option ng-repeat="sub_type in question.sub_types" value="{{sub_type.code}}">{{sub_type.detail}}</option>
+                            </select>
+                            <h3 style="display:inline">{{question.questionData.sub_type}}</h3>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">stimulus</label>
+                        <div class="col-sm-6">
+                            <textarea class="form-control" form="questionform" ng-model="question.questionData.stimulus" rows="10"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">stem</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" ng-model="question.questionData.stem">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">answer_choices</label>
+                        <div class="col-sm-12">
+                            <!-- <ol>
+                        <li ng-repeat="choice in question.questionData.answer_choices">
+                          <ul>
+                            <li>
+                              <label for="">Choice :</label>
+                              <input type="text" ng-model="choice.choice">
+                            </li>
+                            <li>
+                              <label for="">Explanation :</label>
+                              <input type="text" ng-model="choice.explanation">
+                            </li>
+                            <li>
+                              <label for="">Note :</label>
+                              <input type="text" ng-model="choice.note">
+                            </li>
+                          </ul>
+                        </li>
+                      </ul> -->
+                            <!-- <button type="button" ng-click="question.addChoice()">
+                        <span class="glyphicon glyphicon-plus text-success">Add</span>
+                      </button> -->
+
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Items</th>
+                                        <th>Choice</th>
+                                        <th>Explanation</th>
+                                        <th>Note</th>
+                                        <th>Edit/Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="choice in question.questionData.answer_choices" ng-include="question.getTemplate(choice)">
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">right_answer</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" ng-model="question.questionData.right_answer">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-6">
+                            <button class="btn btn-success btn-lg btn-block" type="submit" ng-if="question.type=='create'">Create Question</button>
+                            <button class="btn btn-success btn-lg btn-block" type="submit" ng-if="question.type=='edit'">Update Question</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="row show-hide-message" ng-show="question.message">
+                    <div class="col-sm-6 col-sm-offset-2">
+                        <div class="alert alert-info">{{question.message}}</div>
+                    </div>
+                </div>
+
+                <script id="display" type="text/ng-template">
+                    <td>{{$index + 1}}</td>
+                    <td>{{choice.choice}}</td>
+                    <td>{{choice.explanation}}</td>
+                    <td>{{choice.note}}</td>
                     <td>
-                        {{id}}
+                        <button type="button" ng-click="question.editChoice(choice)"><span class="glyphicon glyphicon-edit text-warning"></span></button>
+                        <button type="button" ng-click="question.deleteChoice(choice)"><span class="glyphicon glyphicon-trash text-danger"></span></button>
                     </td>
-                </tr>
-              </tbody>
-            </table>
-
-            <table  ng-controller="questionController as question"  class="table table-bordered table-striped">
-              <thead>
-                  <tr>
-                      <th>Index</th>
-                      <th>_id</th>
-                      <th>stimulus</th>
-                      <th>Action</th>
-                  </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="item in question.questions | filter: questionpack.filterArray" ng-init="numLimit=16000">
-                    <td>{{$index+1}}</td>
+                </script>
+                <script id="edit" type="text/ng-template">
+                    <td>{{$index + 1}}</td>
                     <td>
-                        {{item._id}}
+                        <input type="text" ng-model="question.selectedChoice.choice" />
                     </td>
-                    <td>{{item.stimulus}}</td>
                     <td>
-                      <button type="button" ng-click="questionpack.deleteQuestionId(item._id)"><span class="glyphicon glyphicon-trash text-danger"></span></button>
+                        <input type="text" ng-model="question.selectedChoice.explanation" />
                     </td>
-                </tr>
-              </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-6">
-            <button class="btn btn-success btn-lg btn-block" type="submit" ng-if="questionpack.type=='create'" style = "margin: 20px 96px;">Create Question Pack</button>
-            <button class="btn btn-success btn-lg btn-block" type="submit" ng-if="questionpack.type=='edit'" style = "margin: 20px 96px;">Update Question Pack</button>
-        </div>
-    </div>
-</form>
-<div class="row show-hide-message" ng-show="questionpack.message">
-  <div class="col-sm-6 col-sm-offset-2">
-    <div class="alert alert-info">{{questionpack.message}}</div>
-  </div>
+                    <td>
+                        <input type="text" ng-model="question.selectedChoice.note" />
+                    </td>
+                    <td>
+                        <button type="button" ng-click="question.saveColor($index)"><span class="glyphicon glyphicon-ok text-success"></span></button>
+                        <button type="button" ng-click="question.reset()"><span class="glyphicon glyphicon-remove text-danger"></span></button>
+                    </td>
+                </script>
+            </div>
+        </uib-accordion-group>
+    </uib-accordion>
 </div>
+<!-- /Create new question toogle bar -->
+<hr>
+<div ng-controller="questionController as question">
+  <!-- ============================= SEARCHBOX =============================== -->
+  <div class="jumbotron text-center">
+      <!-- LOADING MESSAGE -->
+      <div class="jumbotron text-center" ng-show="question.processing">
+          <span class="glyphicon glyphicon-repeat spinner"></span>
+          <p>Loading Questions...</p>
+      </div>
 
-<script id="display" type="text/ng-template">
-  <td>{{$index + 1}}</td>
-  <td>{{id}}</td>
-  <td>
-    <button type="button" ng-click="questionpack.deleteQuestionId(id)"><span class="glyphicon glyphicon-trash text-danger"></span></button>
-  </td>
-</script>
-<!-- <script id="edit" type="text/ng-template">
-    <td>{{$index+1}}</td>
-  <td><input type="text" ng-model="id" /></td>
-  <td>
-    <button type="button" ng-click="questionpack.saveColor($index)"><span class="glyphicon glyphicon-ok text-success"></span></button>
-    <button type="button" ng-click="questionpack.reset()"><span class="glyphicon glyphicon-remove text-danger"></span></button>
-  </td>
-</script> -->
+      <h2>SEARCH BOX</h2>
+      <p>There are: {{question.questions.length}} questions to add</p>   <button type="button" class="btn btn-info" ng-click="question.refeshpage()"> Refesh</button>
+      <span class="glyphicon glyphicon-search"></span>
+      <input type="search" ng-model="x" placeholder="filter questions...">
+
+      <!-- ====== Searchbox result table ===== -->
+
+      <table ng-if="x" class="table table-bordered table-striped" ng-show="question.questions">
+          <thead>
+              <tr>
+                  <th>N.o</th>
+                  <th>type</th>
+                  <th>sub_type</th>
+                  <th>stimulus</th>
+                  <th>stem</th>
+                  <!-- <th>answer_choices</th>
+                  <th>right_answer</th> -->
+                  <th class="col-sm-2"></th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr ng-repeat="item in question.questions|filter:x as results track by $index" ng-init="numLimit=16000">
+                  <td>{{item.index}}</td>
+                  <td>{{item.type}}</td>
+                  <td>{{item.sub_type}}</td>
+                  <td>{{item.stimulus | limitTo:numLimit}}
+                  </td>
+                  <td>{{item.stem | limitTo:numLimit}}
+                  </td>
+                  <td class="col-sm-2">
+                      <a href="#" ng-click="questionpack.addQuestionId(item._id)" class="btn btn-primary">Add</a>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+  </div>
+  <!-- ========================== /END-SEARCHBOX ============================ -->
+  <hr>
+  <form id="questionpackform" class="form-horizontal" ng-submit="questionpack.saveQuestionPack()">
+      <div class="form-group">
+          <label for="" class="col-sm-2 control-label">available time</label>
+          <div class="col-sm-6">
+              <input type="text" class="form-control" ng-model="questionpack.questionPackData.available_time">
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="" class="col-sm-2 control-label">level</label>
+          <div class="col-sm-6">
+              <input type="text" class="form-control" ng-model="questionpack.questionPackData.level">
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="" class="col-sm-2 control-label">question_ids</label>
+          <div class="col-sm-12">
+              <table class="table table-bordered table-striped">
+                  <thead>
+                      <tr>
+                          <th>Index</th>
+                          <th>_id</th>
+                          <th>stimulus</th>
+                          <th>Action</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr ng-repeat="item in question.questions | filter: questionpack.filterArray" ng-init="numLimit=16000">
+                          <td>{{$index+1}}</td>
+                          <td>
+                              {{item._id}}
+                          </td>
+                          <td>{{item.stimulus}}</td>
+                          <td>
+                              <button type="button" ng-click="questionpack.deleteQuestionId(item._id)"><span class="glyphicon glyphicon-trash text-danger"></span></button>
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+      </div>
+      <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-6">
+              <button class="btn btn-success btn-lg btn-block" type="submit" ng-if="questionpack.type=='create'" style="margin: 20px 96px;">Create Question Pack</button>
+              <button class="btn btn-success btn-lg btn-block" type="submit" ng-if="questionpack.type=='edit'" style="margin: 20px 96px;">Update Question Pack</button>
+          </div>
+      </div>
+  </form>
+  <div class="row show-hide-message" ng-show="questionpack.message">
+      <div class="col-sm-6 col-sm-offset-2">
+          <div class="alert alert-info">{{questionpack.message}}</div>
+      </div>
+  </div>
+
+  <script id="display" type="text/ng-template">
+      <td>{{$index + 1}}</td>
+      <td>{{id}}</td>
+      <td>
+          <button type="button" ng-click="questionpack.deleteQuestionId(id)"><span class="glyphicon glyphicon-trash text-danger"></span></button>
+      </td>
+  </script>
+</div>

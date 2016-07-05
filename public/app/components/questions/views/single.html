@@ -2,20 +2,40 @@
     <h1 ng-if="question.type=='create'">Create Question</h1>
     <h1 ng-if="question.type=='edit'">Edit Question</h1>
 </div>
+<!-- LOADING MESSAGE -->
+<div class="jumbotron text-center" ng-show="question.processing">
+    <span class="glyphicon glyphicon-repeat spinner"></span>
+    <p>Loading Questions...</p>
+</div>
 <form id="questionform" class="form-horizontal" ng-submit="question.saveQuestion()">
     <div class="form-group">
         <label class="col-sm-2 control-label">type</label>
         <div class="col-sm-6">
-            <input type="text" class="form-control" ng-model="question.questionData.type">
-        </div>
-        <div class="combobox" >
-            <select style="height:33px" ng-model="question.questionData.type" ng-options="x for x in question.questionData.types"></select>
+            <select style="height:33px" ng-model="question.questionData.type"
+            ng-change="question.changeType(question.questionData.type)">
+              <option ng-repeat="type in question.typelist" value="{{type.code}}">{{type.detail}}</option>
+            </select>
+            <h3 style="display:inline">{{question.questionData.type}}</h3>
+
         </div>
     </div>
+    <!-- <div class="form-group">
+        <label class="col-sm-2 control-label">type</label>
+        <div class="col-sm-6">
+            <select style="height:33px" ng-model="question.questionData.type"
+            ng-change="question.changeType(question.questionData.type)">
+              <option ng-repeat="type in question.typelist" value="type.code" >{{type.detail}}</option>
+            </select>
+            <h1>{{question.questionData.type}}</h1>
+        </div>
+    </div> -->
     <div class="form-group">
         <label for="" class="col-sm-2 control-label">sub_type</label>
         <div class="col-sm-6">
-            <input type="text" class="form-control" ng-model="question.questionData.sub_type">
+            <select style="height:33px" ng-model="question.questionData.sub_type">
+              <option ng-repeat="sub_type in question.sub_types" value="{{sub_type.code}}">{{sub_type.detail}}</option>
+            </select>
+            <h3 style="display:inline">{{question.questionData.sub_type}}</h3>
         </div>
     </div>
     <div class="form-group">
@@ -91,7 +111,7 @@
   </div>
 </div>
 
-<script id="display" type="text/ng-template" ng-if="question.type=='edit'">
+<script id="display" type="text/ng-template">
   <td>{{$index + 1}}</td>
   <td>{{choice.choice}}</td>
   <td>{{choice.explanation}}</td>

@@ -24,23 +24,20 @@ angular.module('questionpackCtrl', ['questionpackService','questionService']) //
 
 .controller('questionpackCreateController', function(Questionpack, $location) {
     var vm = this;
+    vm.processing = true;
     vm.type = 'create';
     vm.selectedQuestion = {};
     vm.questionPackData = {
         question_ids: [
             "57763231078d1226a06cee46",
-            "57763232078d1226a06cee47",
-            "57763233078d1226a06cee48",
-            "57763233078d1226a06cee49",
-            "57763233078d1226a06cee4a",
-            "57763233078d1226a06cee4b",
-            "57763234078d1226a06cee4c",
-            "57763234078d1226a06cee4d",
-            "57763235078d1226a06cee4e",
-            "57763235078d1226a06cee4f"
+            "57763232078d1226a06cee47"
         ]
     };
 
+    vm.types= vm.questionPackData.question_ids;
+    vm.filterArray = function(question) {
+    return (vm.types.indexOf(question._id) !== -1);
+    };
 
     vm.getTemplate = function(id) {
         // if (question.id === vm.selectedQuestion.id) return 'edit';
@@ -92,6 +89,7 @@ angular.module('questionpackCtrl', ['questionpackService','questionService']) //
 
 .controller('questionpackEditController', function($routeParams, Questionpack, $location,Question) {
     var vm = this;
+    vm.processing = false;
     vm.type = 'edit';
     vm.questionPackData = {
         question_ids: []
@@ -99,13 +97,13 @@ angular.module('questionpackCtrl', ['questionpackService','questionService']) //
     vm.selectedQuestion = {};
     Questionpack.get($routeParams.question_pack_id)
         .success(function(res) {
+            vm.processing = false;
             vm.questionPackData = res.data;
             //filter by stimulus
-            vm.types= vm.questionPackData.question_ids;
+            vm.filter= vm.questionPackData.question_ids; //
             vm.filterArray = function(question) {
-            return (vm.types.indexOf(question._id) !== -1);
+            return (vm.filter.indexOf(question._id) !== -1);
             };
-
             vm.getTemplate = function(question) {
                 if (!question) return 'edit';
                 else return 'display';
@@ -115,6 +113,11 @@ angular.module('questionpackCtrl', ['questionpackService','questionService']) //
     vm.addQuestionId = function(id) {
         console.log(vm.questionPackData.question_ids);
         vm.questionPackData.question_ids.push(id);
+        // re-update filter array
+        vm.filter= vm.questionPackData.question_ids;
+        vm.filterArray = function(question) {
+        return (vm.filter.indexOf(question._id) !== -1);
+        };
         console.log(vm.questionPackData.question_ids);
     };
 
@@ -131,11 +134,11 @@ angular.module('questionpackCtrl', ['questionpackService','questionService']) //
             }
         }
     };
-    // get stimulus
-    vm.types= vm.questionPackData.question_ids;
-    vm.filterArray = function(question) {
-    return (vm.types.indexOf(question._id) !== -1);
-    };
+    // // get stimulus
+    // vm.filter= vm.questionPackData.question_ids;
+    // vm.filterArray = function(question) {
+    // return (vm.filter.indexOf(question._id) !== -1);
+    // };
 
     vm.saveColor = function(idx) {
         vm.questionPackData.question_ids[idx] = angular.copy(vm.selectedQuestion);
