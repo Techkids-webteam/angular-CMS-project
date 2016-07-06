@@ -1,11 +1,11 @@
-<div class="page-header">
+<div class="page-header" >
     <h1 ng-if="questionpack.type=='create'">Create Question Pack</h1>
     <h1 ng-if="questionpack.type=='edit'">Edit Question Pack</h1>
 </div>
 
 
 <!-- Create new question toogle bar -->
-<div>
+<div ng-show="question.questions">
     <uib-accordion close-others="oneAtATime" class="setbackground">
         <uib-accordion-group>
             <uib-accordion-heading>
@@ -156,12 +156,12 @@
           <span class="glyphicon glyphicon-repeat spinner"></span>
           <p>Loading Questions...</p>
       </div>
-
-      <h2>SEARCH BOX</h2>
-      <p>There are: {{question.questions.length}} questions to add</p>   <button type="button" class="btn btn-info" ng-click="question.refeshpage()"> Refesh</button>
-      <span class="glyphicon glyphicon-search"></span>
-      <input type="search" ng-model="x" placeholder="filter questions...">
-
+      <div ng-show="question.questions">
+        <h2>SEARCH BOX</h2>
+        <p>There are: {{question.questions.length}} questions to add</p>   <button type="button" class="btn btn-info" ng-click="question.refeshpage()"> Refesh</button>
+        <span class="glyphicon glyphicon-search"></span>
+        <input type="search" ng-model="x" placeholder="filter questions...">
+      </div>
       <!-- ====== Searchbox result table ===== -->
 
       <table ng-if="x" class="table table-bordered table-striped" ng-show="question.questions">
@@ -195,7 +195,7 @@
   </div>
   <!-- ========================== /END-SEARCHBOX ============================ -->
   <hr>
-  <form id="questionpackform" class="form-horizontal" ng-submit="questionpack.saveQuestionPack()">
+  <form id="questionpackform" class="form-horizontal" ng-submit="questionpack.saveQuestionPack()" ng-show="question.questions">
       <div class="form-group">
           <label for="" class="col-sm-2 control-label">available time</label>
           <div class="col-sm-6">

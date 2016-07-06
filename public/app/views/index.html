@@ -63,7 +63,7 @@
 			<a href="/" class="navbar-brand"><span class="glyphicon glyphicon-fire text-danger"></span> GMAT CMS</a>
 		</div>
 		<ul class="nav navbar-nav">
-			<li><a href="/users"><span class="glyphicon glyphicon-user"></span> Users</a></li>
+			<li ng-if="main.user.username == 'admin'"><a href="/users"><span class="glyphicon glyphicon-user" ></span> Users</a></li>
 			<li><a href="/questions"><span class="glyphicon glyphicon-hdd"></span> Questions</a></li>
 			<li><a href="/questionpacks"><span class="glyphicon glyphicon-tasks"></span> Question Packs</a></li>
 		</ul>

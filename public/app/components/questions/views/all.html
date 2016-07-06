@@ -15,7 +15,7 @@
     <p>Loading Questions...</p>
 </div>
 <!-- ============================= SEARCHBOX =============================== -->
-<div class="jumbotron text-center">
+<div class="jumbotron text-center" ng-show="question.questions">
     <h2>SEARCH BOX</h2>
     <p>There are: {{question.questions.length}} question in this list</p>
     <span class="glyphicon glyphicon-search"></span>
@@ -55,7 +55,7 @@
 </div>
 <!-- ========================== /END-SEARCHBOX ============================ -->
 <!-- ========================== TABLE DATA ============================ -->
-<section ng-if="!x">
+<section ng-if="!x" ng-show="question.questions">
     <div class="jumbotron text-center">
         <h2>Summary</h2>
         <p>There are: {{question.questions.length}} question in this list</p>
